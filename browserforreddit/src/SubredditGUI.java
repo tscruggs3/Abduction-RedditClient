@@ -21,7 +21,7 @@ import java.util.List;
  * A class that creates the GUI for the subreddit view
  */
 
-public class SubredditGUI extends Application{
+public class SubredditGUI {
     private static final double SCENE_WIDTH = 500;
     private static final double SCENE_HEIGHT = 300;
     private static final double MIN_UPVOTE_WIDTH = 300;
@@ -29,8 +29,7 @@ public class SubredditGUI extends Application{
     private static final double POSTS_PER_PAGE = 10;
 
 
-    @Override
-    public void start(Stage primaryStage, Subreddit subreddit){
+    public Scene getScene(Subreddit subreddit){
         GridPane root = new GridPane();
         //Could make root a borderpane instead
         root.setPadding(new Insets(10, 10, 10, 10));
@@ -51,10 +50,7 @@ public class SubredditGUI extends Application{
         root.add(copyrightInfo, 0, 3);
 
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
-        primaryStage.setTitle("Abduction Reddit Client");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
+        return scene;
     }
 
     private HBox addTitle(String title) {
