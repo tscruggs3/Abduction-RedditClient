@@ -1,17 +1,16 @@
-import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.geometry.Insets;
 import javafx.scene.text.Text;
-import javafx.geometry.Pos;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import java.util.ArrayList;
-import javafx.scene.control.*;
+
 import java.util.List;
 
 
@@ -30,30 +29,23 @@ public class SubredditGUI {
 
 
     public Scene getScene(Subreddit subreddit){
-        GridPane root = new GridPane();
-        //Could make root a borderpane instead
-        root.setPadding(new Insets(10, 10, 10, 10));
-        root.setMinSize(300, 300);
-        root.setVgap(5);
-        root.setHgap(5);
 
-        HBox subredditTitle = addTitle(subreddit.getTitle());
+        HBox subredditTitle = addSubredditTitle(subreddit.getTitle());
         HBox menuPane = addMenus();
-        VBox scrollBar = addScrollbar();
         VBox postsPane = addPosts(subreddit.getPostList());
+        Text copyrightInfo = new Text("Reddit is a registered trademark of Reddit Inc.");
 
-        root.add(subredditTitle, 0, 0);
-        root.add(scrollBar, 1, 0);
-        root.add(menuPane, 0, 1);
-        root.add(postsPane, 0, 2);
-        Text copyrightInfo = new Text("Reddit is a trademark of Reddit");
-        root.add(copyrightInfo, 0, 3);
+        ScrollPane postScroller = new ScrollPane(postsPane);
+        postScroller.setFitToWidth(true);
 
-        Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+        VBox header = new VBox();
+        header.getChildren().addAll(subredditTitle, menuPane);
+
+        Scene scene = new Scene(new BorderPane(postScroller, header, null, copyrightInfo, null), SCENE_WIDTH, SCENE_HEIGHT);
         return scene;
     }
 
-    private HBox addTitle(String title) {
+    private HBox addSubredditTitle(String title) {
         HBox titlePane = new HBox();
         titlePane.setAlignment(Pos.TOP_LEFT);
 
@@ -113,9 +105,6 @@ public class SubredditGUI {
         pane.getChildren().add(menuBar);
 
         return pane;
-    }
-
-    private VBox addScrollbar() {
     }
 
     private VBox addPosts(List<PostPreview> postList) {
