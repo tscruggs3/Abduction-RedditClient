@@ -23,9 +23,9 @@ import java.util.List;
 public class SubredditGUI {
     private static final double SCENE_WIDTH = 500;
     private static final double SCENE_HEIGHT = 300;
-    private static final double MIN_UPVOTE_WIDTH = 300;
-    private static final double MIN_TITLE_WIDTH = 400;
-    private static final double POSTS_PER_PAGE = 10;
+    private static final double MIN_UPVOTE_WIDTH = 90;
+    private static final double MIN_TITLE_WIDTH = 250;
+    private static final int POSTS_PER_PAGE = 10;
 
 
     public Scene getScene(Subreddit subreddit){
@@ -109,8 +109,10 @@ public class SubredditGUI {
 
     private VBox addPosts(List<PostPreview> postList) {
         VBox postsVBox = new VBox();
-        for (int i = 0; i < POSTS_PER_PAGE; i ++){
-            GridPane post = addPostPreview(i, postList.get(i));
+        int numbPosts = Math.min(POSTS_PER_PAGE, postList.size());
+
+        for (int i = 0; i < numbPosts; i ++){
+            GridPane post = addPostPreview(i+1, postList.get(i));
             postsVBox.getChildren().add(post);
         }
         return postsVBox;
@@ -120,7 +122,7 @@ public class SubredditGUI {
         GridPane postPane = new GridPane();
         postPane.setPadding(new Insets(10,10,10,10));
         postPane.setMinSize(SCENE_WIDTH, SCENE_HEIGHT);
-        postPane.setVgap(5);
+        postPane.setVgap(0);
         postPane.setHgap(5);
 
         Button upvote = new Button("upvote");
@@ -130,14 +132,14 @@ public class SubredditGUI {
         Text postNumb = new Text(Integer.toString(postNumber));
         postPane.add(postNumb, 0, 1);
 
-        Text voteCount = new Text(Integer.toString(postPreview.getVote()));
+        Text voteCount = new Text("         " + Integer.toString(postPreview.getVote()));
         postPane.add(voteCount, 1, 1);
 
         Button postContent = new Button(postPreview.getTitle());
         postContent.setMinWidth(MIN_TITLE_WIDTH);
         postPane.add(postContent, 2, 1);
 
-        String userEntry = "By" + postPreview.getUsername();
+        String userEntry = "By " + postPreview.getUsername();
         Text username = new Text(userEntry);
         postPane.add(username, 3, 1);
 
