@@ -14,6 +14,12 @@ public class RedditController extends Application {
     private PostGUI postRender;
     private UserGUI userRender;
 
+    /**
+     * Initializes our reddit application. This is the javafx
+     * standard for how to open an application
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         subredditRender = new SubredditGUI(this);
@@ -26,10 +32,17 @@ public class RedditController extends Application {
         primaryStage.show();
     }
 
+    /**
+     * This function is called by the GUIs in order to go to the previously visited page
+     */
     public void requestBack() {
         backButton();
     }
 
+    /**Scrapes a page and returns an appropriate gui
+     *
+     * @param url the url of the reddit page to scrape
+     */
     public void requestPage(String url) {
         //TODO: change url to actually be urls instead of specific hardcoded references
         // NOTE: This will parse the HTML at "url" and return the appropriate objects.
