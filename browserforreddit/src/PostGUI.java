@@ -1,20 +1,10 @@
-/*
-Button upvote = new Button();
-Image upvoteImage = new Image(getClass().getResourceAsStream("images/upvote.png"));
-upvote.setGraphic(new ImageView(upvoteImage));
- */
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -24,7 +14,12 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.shape.Rectangle;
+
+/**
+ * A class for generating JavaFX scenes from scraped reddit post data
+ *
+ * @author Jordan Sybesma
+ */
 
 public class PostGUI {
 
@@ -34,10 +29,19 @@ public class PostGUI {
     private static final double MIN_TITLE_WIDTH = 250;
     private RedditController controller;
 
+    /**
+     * Constructor
+     * @param controller The controlling class that observes events triggered on Post pages
+     */
     public PostGUI(RedditController controller) {
         this.controller = controller;
     }
 
+    /**
+     * Returns a scene given scraped post data
+     * @param post Scraped post data
+     * @return Scene
+     */
     public Scene getScene(Post post) {
         BorderPane page = new BorderPane();
         /* Top: Back button, subreddit link, user link
@@ -59,6 +63,7 @@ public class PostGUI {
         return scene;
     }
 
+    // Helper method for comment recursion
     private int getParentCount(Comment comment) {
         int count = 0;
         Comment current = comment;
@@ -69,22 +74,15 @@ public class PostGUI {
         return count;
     }
 
+    // Comment recursion
+    private void recursiveIndex(Comment comment, ArrayList<Node> output) {
+        output.add(createCommentNode(comment));
+        for (Comment child : comment.getChildren()) {
+            recursiveIndex(child, output);
+        }
+    }
+
     private Pane createCommentNode(Comment comment) {
-
-       /* How this works:
-        * All encompassed in a VBox
-        *   Top Row: HBox
-        *       Vote | Upvote | Downvote | author link
-        *   Bottom Row: Text Label
-        *       Content
-        *
-        * for each level of indent, add 30px padding to the left.
-        *
-        * For now, I'm just not gonna render anything past 7 levels.  This app isn't for /r/askouija
-        */
-
-        // THOMAS CODE //
-
         GridPane postPane = new GridPane();
         postPane.setPadding(new Insets(0, 5, 5, 5 + 50 * getParentCount(comment)));
         postPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
@@ -129,13 +127,6 @@ public class PostGUI {
         result.setAlignment(Pos.CENTER_LEFT);
 
         return result;
-    }
-
-    private void recursiveIndex(Comment comment, ArrayList<Node> output) {
-        output.add(createCommentNode(comment));
-        for (Comment child : comment.getChildren()) {
-            recursiveIndex(child, output);
-        }
     }
 
     private Pane buildComments(Post post) {
