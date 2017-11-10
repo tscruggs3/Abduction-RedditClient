@@ -6,8 +6,10 @@ upvote.setGraphic(new ImageView(upvoteImage));
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
@@ -16,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.image.*;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,11 +84,13 @@ public class PostGUI {
         postPane.setVgap(0);
         postPane.setHgap(5);
 
-        Button upvote = new Button("Upvote");
+        Button upvote = new Button("+");
         upvote.setMinWidth(MIN_UPVOTE_WIDTH);
         postPane.add(upvote, 1, 0);
 
         Text voteCount = new Text(Integer.toString(comment.getVotes()));
+        voteCount.setTextAlignment(TextAlignment.CENTER);
+        GridPane.setHalignment(voteCount, HPos.CENTER);
         postPane.add(voteCount, 1, 1);
 
         Text content = new Text(comment.getContent());
@@ -94,7 +99,7 @@ public class PostGUI {
         Text username = new Text(comment.getUsername());
         postPane.add(username, 2, 0);
 
-        Button downvote = new Button("downvote");
+        Button downvote = new Button("-");
         downvote.setMinWidth(MIN_UPVOTE_WIDTH);
         postPane.add(downvote, 1, 2);
 
