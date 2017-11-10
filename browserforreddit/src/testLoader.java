@@ -9,11 +9,27 @@ public class testLoader extends Application {
         Post fakePost = buildFakePost();
 
         PostGUI renderer = new PostGUI();
-        Scene scene = renderer.render(fakePost);
+        Scene scene = renderer.getScene(fakePost);
+
+        //UserGUI renderer = new UserGUI();
+       // Scene scene = renderer.getScene(buildFakeUser());
 
         primaryStage.setTitle("Test");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private User buildFakeUser() {
+        User something =  new User("Name",122,33333);
+        PostPreview first = new PostPreview("content","comment", something.getUsername(),"Post1", 1222);
+        PostPreview second = new PostPreview("content2","comment2", something.getUsername(),"Post2", 1222);
+        CommentPreview firstC = new CommentPreview("content","Comment1", 1222);
+        CommentPreview secondC = new CommentPreview("content2","Comment2", 1222);
+        something.addPost(first);
+        something.addPost(second);
+        something.addComment(firstC);
+        something.addComment(secondC);
+        return something;
     }
 
     private Post buildFakePost() {

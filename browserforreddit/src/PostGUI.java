@@ -1,34 +1,51 @@
+/*
+Button upvote = new Button();
+Image upvoteImage = new Image(getClass().getResourceAsStream("images/upvote.png"));
+upvote.setGraphic(new ImageView(upvoteImage));
+ */
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.image.*;
 import javafx.scene.web.WebView;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.shape.Rectangle;
 
 public class PostGUI {
 
-    public Scene render(Post post) {
-        BorderPane page = new BorderPane();
+    private static final double SCENE_WIDTH = 600;
+    private static final double SCENE_HEIGHT = 400;
+    private static final double MIN_UPVOTE_WIDTH = 110;
+    private static final double MIN_TITLE_WIDTH = 250;
 
+    public Scene getScene(Post post) {
+        BorderPane page = new BorderPane();
         /* Top: Back button, subreddit link, user link
          * Right: Sidebar content
          * Center: VBox of comments
          */
 
-        page.setRight(buildSidebar(post));
-        page.setTop(buildTitle(post));
-        page.setCenter(buildComments(post));
+        Pane sidebar = buildSidebar(post);
+        Pane title = buildTitle(post);
+        Pane comments = buildComments(post);
 
-        Scene scene = new Scene(page, 600, 800);
+        BorderPane.setAlignment(sidebar, Pos.CENTER_RIGHT);
+
+        page.setRight(sidebar);
+        page.setTop(title);
+        page.setCenter(comments);
+
+        Scene scene = new Scene(page, SCENE_WIDTH, SCENE_HEIGHT);
         return scene;
     }
 
@@ -42,7 +59,7 @@ public class PostGUI {
         return count;
     }
 
-    private Node createCommentNode(Comment comment) {
+    private Pane createCommentNode(Comment comment) {
 
        /* How this works:
         * All encompassed in a VBox
@@ -56,25 +73,41 @@ public class PostGUI {
         * For now, I'm just not gonna render anything past 7 levels.  This app isn't for /r/askouija
         */
 
-        // Top Row
+        // THOMAS CODE //
+
+        GridPane postPane = new GridPane();
+        postPane.setPadding(new Insets(0, 5, 5, 5 + 50 * getParentCount(comment)));
+        postPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
+        postPane.setVgap(0);
+        postPane.setHgap(5);
+
+        Button upvote = new Button("Upvote");
+        upvote.setMinWidth(MIN_UPVOTE_WIDTH);
+        postPane.add(upvote, 1, 0);
+
         Text voteCount = new Text(Integer.toString(comment.getVotes()));
-        Button upvote = new Button();
-        Image upvoteImage = new Image(getClass().getResourceAsStream("images/upvote.png"));
-        upvote.setGraphic(new ImageView(upvoteImage));
-        Button downvote = new Button();
-        Image downvoteImage = new Image(getClass().getResourceAsStream("images/downvote.png"));
-        downvote.setGraphic(new ImageView(downvoteImage));
-        Hyperlink author = new Hyperlink(comment.getUsername());
-        HBox details = new HBox(10,voteCount, upvote, downvote, author);
+        postPane.add(voteCount, 1, 1);
 
-        // Bottom Row
         Text content = new Text(comment.getContent());
+        postPane.add(content, 2, 1);
 
-        // Put it all together
-        VBox frame = new VBox(10,details,content);
-        frame.setPadding(new Insets(0, 5, 5, 5 + 30 * getParentCount(comment)));
+        Text username = new Text(comment.getUsername());
+        postPane.add(username, 2, 0);
 
-        return frame;
+        Button downvote = new Button("downvote");
+        downvote.setMinWidth(MIN_UPVOTE_WIDTH);
+        postPane.add(downvote, 1, 2);
+
+        Rectangle outline = new Rectangle(postPane.getMaxWidth(),postPane.getMaxHeight());
+        outline.setFill(Color.GREEN);
+        outline.setStroke(Color.BLACK);
+        outline.setStrokeWidth(30);
+        outline.setArcHeight(20);
+        outline.setArcWidth(20);
+
+        StackPane result = new StackPane(postPane, outline);
+
+        return result;
     }
 
     private void recursiveIndex(Comment comment, ArrayList<Node> output) {
@@ -84,7 +117,7 @@ public class PostGUI {
         }
     }
 
-    private Node buildComments(Post post) {
+    private Pane buildComments(Post post) {
         // Depth-first traversal of the tree.
         // Place everything in a vbox, then put that in the ScrollFrame
         // VBox.getChildren().add()
@@ -105,22 +138,29 @@ public class PostGUI {
         return comments;
     }
 
-    private Node buildTitle(Post post) {
+    private Pane buildTitle(Post post) {
         // Back button, subreddit text, postname by text, author hyperlink
         Button back = new Button();
         Image backImage = new Image(getClass().getResourceAsStream("images/back.png"));
-        back.setGraphic(new ImageView(backImage));
+        ImageView processedImage = new ImageView(backImage);
+        processedImage.setFitHeight(100);
+        processedImage.setFitWidth(100);
+        back.setGraphic(processedImage);
         Text subredditName = new Text(post.getSubreddit().getTitle()+"/ ");
-        Text postName = new Text(post.getTitle() + "by ");
+        Text postName = new Text(post.getTitle() + " by");
         Hyperlink author = new Hyperlink(post.getUsername());
         HBox title = new HBox(5,back, subredditName, postName, author);
+        title.setAlignment(Pos.CENTER_LEFT);
+        title.setPadding(new Insets(0,0,20,0));
         return title;
     }
 
-    private Node buildSidebar(Post post) {
+    private Pane buildSidebar(Post post) {
         WebView sidebarContent = new WebView();
+        sidebarContent.setMaxWidth(200);
         sidebarContent.getEngine().loadContent(post.getSubreddit().getSidebarContent());
-        return sidebarContent;
+        FlowPane bin = new FlowPane(sidebarContent);
+        return bin;
     }
 
 }
