@@ -14,13 +14,15 @@ public class Post {
 	private String content;
 	private List<Comment> comments;
 	private int votes;
+	private Subreddit subreddit;
 
-	public Post(String username, String title, String content, Comment root, int votes) {
+	public Post(String username, String title, String content, int votes, Subreddit subreddit) {
 		this.username = username;
 		this.title = title;
 		this.content = content;
 		this.votes = votes;
 		comments = new ArrayList<Comment>();
+		this.subreddit = subreddit;
 	}
 
 	// Add a top level comment
@@ -48,4 +50,7 @@ public class Post {
 		return votes;
 	}
 
+	public Subreddit getSubreddit() {
+		return subreddit;
+	}
 }
