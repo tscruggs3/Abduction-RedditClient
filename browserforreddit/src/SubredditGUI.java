@@ -21,8 +21,8 @@ import java.util.List;
  */
 
 public class SubredditGUI {
-    private static final double SCENE_WIDTH = 500;
-    private static final double SCENE_HEIGHT = 300;
+    private static final double SCENE_WIDTH = 1100;
+    private static final double SCENE_HEIGHT = 750;
     private static final double MIN_UPVOTE_WIDTH = 90;
     private static final double MIN_TITLE_WIDTH = 250;
     private static final int POSTS_PER_PAGE = 10;
@@ -61,7 +61,7 @@ public class SubredditGUI {
         pane.setAlignment(Pos.TOP_LEFT);
 
         MenuBar menuBar = new MenuBar();
-        menuBar.setMinWidth(SCENE_WIDTH);
+        menuBar.setMinWidth(SCENE_WIDTH+1000);
 
         Menu refreshMenu = new Menu("Refresh");
 
@@ -121,7 +121,7 @@ public class SubredditGUI {
     private GridPane addPostPreview(int postNumber, PostPreview postPreview) {
         GridPane postPane = new GridPane();
         postPane.setPadding(new Insets(10,10,10,10));
-        postPane.setMinSize(SCENE_WIDTH, SCENE_HEIGHT);
+        postPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
         postPane.setVgap(0);
         postPane.setHgap(5);
 
