@@ -7,6 +7,9 @@ import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -17,32 +20,26 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class UserGUI  {
-    private static final double SCENE_WIDTH = 500;
-    private static final double SCENE_HEIGHT = 300;
-    private static final double MIN_UPVOTE_WIDTH = 50;
-    private static final double MIN_TITLE_WIDTH =300;
+    private static final double SCENE_WIDTH = 1020;
+    private static final double SCENE_HEIGHT = 765;
+    private static final double MIN_UPVOTE_WIDTH = 30;
+    private static final double MIN_TITLE_WIDTH = 250;
     private static final double POSTS_PER_PAGE = 2;
-    
-    //dummy variables to test the design/layout of the code
-    User something =  new User("Name",122,33333);
-    PostPreview first = new PostPreview("content","comment", something.getUsername(),"Post1", 1222);
-    PostPreview second = new PostPreview("content2","comment2", something.getUsername(),"Post2", 1222);
-    CommentPreview firstC = new CommentPreview("content","Comment1", 1222);
-    CommentPreview secondC = new CommentPreview("content2","Comment2", 1222);
-   
-    public Scene getScene(User name) {
+    private RedditController controller;
+
+    public UserGUI(RedditController controller) {
+        this.controller = controller;
+    }
+
+    public Scene getScene(User user) {
       //adding dummy data to test out the design
       //should not be present in finalized version
-        something.addPost(first);
-        something.addPost(second);
-        something.addComment(firstC);
-        something.addComment(secondC);
         
         BorderPane root = new BorderPane();
         root.setPrefSize(1200,600);
-        VBox userInfo = createUserInfo();
+        VBox userInfo = createUserInfo(user);
         //VBox postsPane = addPosts(something.getPosts());
-        VBox commentsPane = addComments(something.getComments());
+        VBox commentsPane = addComments(user.getComments());
         
         root.setTop(userInfo);
        // root.setCenter(postsPane);
@@ -54,18 +51,27 @@ public class UserGUI  {
 
    //Creates a VBox on the Top of the BorderPane with all info of the user
    //We can change the font/size/color of stuff if we want to later
-    private VBox createUserInfo() {
+    private VBox createUserInfo(User user) {
       VBox info = new VBox(15);
 
-      Label user  = new Label("/u/" + something.getUsername());
-      Button back = new Button("Back");
-      Node numPane = addNums();
-      Node buttonPane = addButtons();
+        Label username  = new Label("/u/" + user.getUsername());
+        username.setFont(Font.font("Verdana", FontWeight.BOLD, 60));
+
+        Button back = new Button();
+        Image backImage = new Image(getClass().getResourceAsStream("images/back.png"));
+        ImageView processedImage = new ImageView(backImage);
+        back.setOnAction(evt -> controller.requestBack());
+        processedImage.setFitHeight(75);
+        processedImage.setFitWidth(75);
+        back.setGraphic(processedImage);
+
+        Node numPane = addNums(user);
+        Node buttonPane = addButtons();
       
-      info.setAlignment(Pos.CENTER);
+        info.setAlignment(Pos.CENTER);
       
-      info.getChildren().addAll(user, numPane, buttonPane);
-      return info;
+        info.getChildren().addAll(username, numPane, buttonPane, back);
+        return info;
     }
     
     //Adds the posts/comments buttons that switch the information shown below the topPane of BorderPane
@@ -88,22 +94,23 @@ public class UserGUI  {
     
     //Scraps all relevant information of a user to display it on their page.
     //User is given to the scene at the very begining
-    private Node addNums(){
+    private Node addNums(User user){
        GridPane nums = new GridPane();
        nums.setAlignment(Pos.CENTER);
       
-       Label num1 = new Label(Integer.toString(something.getPostKarma()));
+       Label num1 = new Label(Integer.toString(user.getPostKarma()));
        nums.add(num1,1,0);
       
        Label info1 = new Label("Post Karma: ");
        nums.add(info1,0,0);
        nums.setHalignment(info1, HPos.RIGHT);
+
       
        Label info2 = new Label("Comment Karma: ");
        nums.add(info2,0,1);
        nums.setHalignment(info2, HPos.RIGHT);
 
-       Label num2 = new Label(Integer.toString(something.getLinkKarma()));
+       Label num2 = new Label(Integer.toString(user.getLinkKarma()));
        nums.add(num2,1,1);
       
        return nums;
@@ -124,11 +131,11 @@ public class UserGUI  {
     private GridPane addPostPreview(int postNumber, PostPreview postPreview) {
         GridPane postPane = new GridPane();
         postPane.setPadding(new Insets(0,10,0,10));
-        postPane.setMinSize(SCENE_WIDTH, SCENE_HEIGHT);
+        postPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
         postPane.setVgap(0);
         postPane.setHgap(5);
 
-        Button upvote = new Button("up");
+        Button upvote = new Button("+");
         upvote.setMinWidth(MIN_UPVOTE_WIDTH);
         postPane.add(upvote, 1, 0);
 
@@ -139,15 +146,16 @@ public class UserGUI  {
         postPane.add(voteCount, 1, 1);
         postPane.setHalignment(voteCount, HPos.CENTER);
 
-        Button postContent = new Button(postPreview.getTitle());
-        postContent.setMinWidth(MIN_TITLE_WIDTH);
+        Hyperlink postContent = new Hyperlink(postPreview.getTitle());
+        postContent.setMinWidth(MIN_TITLE_WIDTH/2);
+        postContent.setOnAction(evt -> controller.requestPage("page1"));
         postPane.add(postContent, 2, 1);
 
         String userEntry = "By " + postPreview.getUsername();
         Text username = new Text(userEntry);
         postPane.add(username, 3, 1);
 
-        Button downvote = new Button("down");
+        Button downvote = new Button("-");
         downvote.setMinWidth(MIN_UPVOTE_WIDTH);
         postPane.add(downvote, 1, 2);
 
@@ -176,12 +184,12 @@ public class UserGUI  {
     //shows relevant info such as up/down cote, main content
     private GridPane addCommentPreview(int commentNumber, CommentPreview commentPreview) {
         GridPane commentPane = new GridPane();
-        commentPane.setPadding(new Insets(0,10,0,10));
-        commentPane.setMinSize(SCENE_WIDTH, SCENE_HEIGHT);
+        commentPane.setPadding(new Insets(10,10,10,10));
+        commentPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
         commentPane.setVgap(0);
         commentPane.setHgap(5);
 
-        Button upvote = new Button("up");
+        Button upvote = new Button("+");
         upvote.setMinWidth(MIN_UPVOTE_WIDTH);
         commentPane.add(upvote, 1, 0);
 
@@ -192,11 +200,12 @@ public class UserGUI  {
         commentPane.add(voteCount, 1, 1);
         commentPane.setHalignment(voteCount, HPos.CENTER);
 
-        Button commentContent = new Button(commentPreview.getTitle());
-        commentContent.setMinWidth(MIN_TITLE_WIDTH);
+        Hyperlink commentContent = new Hyperlink(commentPreview.getTitle());
+        commentContent.setMinWidth(MIN_TITLE_WIDTH/2);
+        commentContent.setOnAction(evt -> controller.requestPage("post1"));
         commentPane.add(commentContent, 2, 1);
 
-        Button downvote = new Button("down");
+        Button downvote = new Button("-");
         downvote.setMinWidth(MIN_UPVOTE_WIDTH);
         commentPane.add(downvote, 1, 2);
 

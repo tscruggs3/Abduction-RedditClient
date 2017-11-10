@@ -15,6 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.image.*;
@@ -26,10 +28,15 @@ import javafx.scene.shape.Rectangle;
 
 public class PostGUI {
 
-    private static final double SCENE_WIDTH = 600;
-    private static final double SCENE_HEIGHT = 400;
-    private static final double MIN_UPVOTE_WIDTH = 110;
+    private static final double SCENE_WIDTH = 1020;
+    private static final double SCENE_HEIGHT = 765;
+    private static final double MIN_UPVOTE_WIDTH = 30;
     private static final double MIN_TITLE_WIDTH = 250;
+    private RedditController controller;
+
+    public PostGUI(RedditController controller) {
+        this.controller = controller;
+    }
 
     public Scene getScene(Post post) {
         BorderPane page = new BorderPane();
@@ -103,14 +110,23 @@ public class PostGUI {
         downvote.setMinWidth(MIN_UPVOTE_WIDTH);
         postPane.add(downvote, 1, 2);
 
-        Rectangle outline = new Rectangle(postPane.getMaxWidth(),postPane.getMaxHeight());
-        outline.setFill(Color.GREEN);
+        /*
+        TODO: Implement outlines
+
+        Rectangle outline = new Rectangle();
+        outline.setX(0);
+        outline.setY(0);
+        outline.setHeight(100);
+        outline.setWidth(200);
+        outline.setFill(null);
         outline.setStroke(Color.BLACK);
-        outline.setStrokeWidth(30);
+        outline.setStrokeWidth(2);
         outline.setArcHeight(20);
         outline.setArcWidth(20);
+        */
 
-        StackPane result = new StackPane(postPane, outline);
+        StackPane result = new StackPane(postPane);
+        result.setAlignment(Pos.CENTER_LEFT);
 
         return result;
     }
@@ -148,14 +164,21 @@ public class PostGUI {
         Button back = new Button();
         Image backImage = new Image(getClass().getResourceAsStream("images/back.png"));
         ImageView processedImage = new ImageView(backImage);
-        processedImage.setFitHeight(100);
-        processedImage.setFitWidth(100);
+        back.setOnAction(evt -> controller.requestBack());
+        processedImage.setFitHeight(75);
+        processedImage.setFitWidth(75);
         back.setGraphic(processedImage);
+
         Text subredditName = new Text(post.getSubreddit().getTitle()+"/ ");
+        subredditName.setFont(Font.font("Verdana", FontWeight.BOLD, 60));
         Text postName = new Text(post.getTitle() + " by");
+        postName.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
         Hyperlink author = new Hyperlink(post.getUsername());
+        author.setOnAction(evt -> controller.requestPage("/u/janedoe"));
+        author.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+
         HBox title = new HBox(5,back, subredditName, postName, author);
-        title.setAlignment(Pos.CENTER_LEFT);
+        title.setAlignment(Pos.BOTTOM_LEFT);
         title.setPadding(new Insets(0,0,20,0));
         return title;
     }
@@ -165,6 +188,7 @@ public class PostGUI {
         sidebarContent.setMaxWidth(200);
         sidebarContent.getEngine().loadContent(post.getSubreddit().getSidebarContent());
         FlowPane bin = new FlowPane(sidebarContent);
+        bin.setMaxWidth(200);
         return bin;
     }
 

@@ -1,10 +1,7 @@
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -23,13 +20,28 @@ import java.util.List;
  */
 
 public class SubredditGUI {
-    private static final double SCENE_WIDTH = 600;
-    private static final double SCENE_HEIGHT = 400;
-    private static final double MIN_UPVOTE_WIDTH = 110;
+    private static final double SCENE_WIDTH = 1020;
+    private static final double SCENE_HEIGHT = 765;
+    private static final double MIN_UPVOTE_WIDTH = 30;
     private static final double MIN_TITLE_WIDTH = 250;
     private static final int POSTS_PER_PAGE = 10;
 
+    private RedditController controller;
 
+
+    /** The Subreddit GUI constructor.
+     *  @param controller is a reference to the the RedditController class.
+     */
+
+    public SubredditGUI(RedditController controller) {
+        this.controller = controller;
+    }
+
+    /** Creates a scene object.
+     *
+     * @param subreddit is a Subreddit object.
+     * @return a scene given the subreddit.
+     */
     public Scene getScene(Subreddit subreddit){
 
         HBox subredditTitle = addSubredditTitle(subreddit.getTitle());
@@ -128,18 +140,13 @@ public class SubredditGUI {
         postPane.setVgap(0);
         postPane.setHgap(5);
 
-        /* TODO: I think this is the something close to the code for making the images buttons.
 
-        Image backImage = new Image(getClass().getResourceAsStream("back.png"));
-        Button upvote = new Button("", new ImageView(backImage));
-         */
-        Button upvote = new Button("Upvote");
+        Button upvote = new Button("+");
         upvote.setMinWidth(MIN_UPVOTE_WIDTH);
         postPane.add(upvote, 1, 0);
 
         Text postNumb = new Text(Integer.toString(postNumber));
         postPane.add(postNumb, 0, 1);
-
 
         Text voteCount = new Text("         " + Integer.toString(postPreview.getVote()));
         postPane.add(voteCount, 1, 1);
@@ -147,7 +154,6 @@ public class SubredditGUI {
         upvote.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-               upvote.setText("Upvoted!");
                upvote.setTextFill(Color.GREEN);
                //TODO: tell controller to increase vote by 1
                 voteCount.setText("         " + Integer.toString(postPreview.getVote()));
@@ -155,25 +161,24 @@ public class SubredditGUI {
         });
 
 
-        Button postContent = new Button(postPreview.getTitle());
+        Hyperlink postContent = new Hyperlink(postPreview.getTitle());
         postContent.setMinWidth(MIN_TITLE_WIDTH);
-        postContent.setOnAction(evt -> postContent.setText("Clicked on " + postPreview.getContentURL()));
+        postContent.setOnAction(evt -> controller.requestPage(postPreview.getContentURL()));
         postPane.add(postContent, 2, 1);
 
         String userEntry = "By " + postPreview.getUsername();
-        Button username = new Button(userEntry);
+        Hyperlink username = new Hyperlink(userEntry);
         username.setMinWidth(MIN_TITLE_WIDTH);
-        username.setOnAction(evt -> username.setText("Clicked on " + postPreview.getUsername()));
+        username.setOnAction(evt -> controller.requestPage(postPreview.getUsername()));
         postPane.add(username, 3, 1);
 
-        Button downvote = new Button("downvote");
+        Button downvote = new Button("-");
         downvote.setMinWidth(MIN_UPVOTE_WIDTH);
         postPane.add(downvote, 1, 2);
 
         downvote.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                downvote.setText("Downvoted!");
                 downvote.setTextFill(Color.RED);
                 //TODO: tell controller to decrease vote by 1
                 voteCount.setText("         " + Integer.toString(postPreview.getVote()));
@@ -182,10 +187,7 @@ public class SubredditGUI {
 
         Button comments = new Button("Comments");
         comments.setMinWidth(MIN_UPVOTE_WIDTH);
-        /* TODO on click, the comments button should go to the comments page
-
-         */
-        comments.setOnAction(evt -> comments.setText("Clicked on " + postPreview.getCommentURL()));
+        comments.setOnAction(evt -> controller.requestPage(postPreview.getCommentURL()));
         postPane.add(comments, 3, 2);
 
         return postPane;
