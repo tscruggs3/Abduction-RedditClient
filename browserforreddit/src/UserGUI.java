@@ -27,10 +27,23 @@ public class UserGUI  {
     private static final double POSTS_PER_PAGE = 2;
     private RedditController controller;
 
+   /**
+    *Creates the controller for the UserGUI interface.
+    *This method is called every time the UserGUI is created and used
+    * so that the controller can see what buttons/links are clicked on and
+    *display the appropiate information.
+    *@param controller a controller object that display all appropiate information when asked for
+    */
     public UserGUI(RedditController controller) {
         this.controller = controller;
     }
-
+    
+   /**
+    *Creates the scene for a UserGUI page. This scene displays all posts and comments for the user. 
+    *Also displays all relevant user information usch as CommentKarma, PostKarma, and links to all posts/comments
+    *@param user a User object that is fed into the method which then gets all relevant information for that given User
+    *@return the GUI for a given User to display all posts/comments/information
+    */
     public Scene getScene(User user) {
       //adding dummy data to test out the design
       //should not be present in finalized version
@@ -38,11 +51,11 @@ public class UserGUI  {
         BorderPane root = new BorderPane();
         root.setPrefSize(1200,600);
         VBox userInfo = createUserInfo(user);
-        //VBox postsPane = addPosts(something.getPosts());
+        //VBox postsPane = addPosts(user.getPosts());
         VBox commentsPane = addComments(user.getComments());
         
         root.setTop(userInfo);
-       // root.setCenter(postsPane);
+        //root.setCenter(postsPane);
         root.setCenter(commentsPane);
    
         Scene scene = new Scene(root, 1200, 600);
