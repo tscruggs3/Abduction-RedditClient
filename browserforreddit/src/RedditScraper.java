@@ -12,15 +12,135 @@ public class RedditScraper{
     public RedditScraper(){
 
     }
-    /*
-    title
-    votes
-    user
-    comment
-    content link
-    subreddit
-     */
-    //Scrapes a url and returns a Subreddit object
+
+    public static void main(String[]args){
+        RedditScraper user = new RedditScraper();
+        //user.subReddit("http://www.reddit.com/r/random");
+        user.scrapePost("https://www.reddit.com/r/politics/comments/7cqez8/the_secret_correspondence_between_donald_trump_jr/");
+    }
+    public Post scrapePost(String url){
+        UserAgent user = new UserAgent();
+        try{
+            user.visit(url);
+        }catch (JauntException e){
+            return dummyPost();
+        }
+        Element postData = user.doc;
+        try {
+            postData = user.doc.findFirst("<div class='sitetable linklisting'").getElement(0);
+        }catch(NotFound e){
+            return dummyPost();
+        }
+        System.out.println(postData);
+        try {
+            String author = postData.getAt("data-author");
+            String votes = postData.getAt("data-score");
+            String postUrl = postData.getAt("data-permalink");
+            String title = postData.findFirst("<div class='title'>").findFirst("<a>").getText();
+            String content;
+            try{
+                postData.findFirst("<div class='md'>");
+                content = postData.getText();
+            } catch(NotFound e){
+                content = "";
+            }
+            // Determine if post has content.  If not, return ""
+            return new Post(author, title, content, scrapeComments(url, user), votes);
+        }catch(NotFound e){
+            return dummyPost();
+        }
+
+    }
+
+    private Post dummyPost(){
+        return new Post("author", "title", "content", "scrapeComments(url, user)", "votes");
+    }
+
+    private Comment scrapeComments(String url, UserAgent user){
+        Element commentSection;
+        Comment nestedComments = new Comment();
+        try {
+            commentSection = user.doc.findFirst("<div class='sitetable nestedlisting'>");
+            recursiveScrape(3, commentSection, nestedComments);
+        }
+        catch(NotFound e){
+            System.err.println(e);
+            commentSection = user.doc;
+        }
+        return nestedComments;
+    }
+
+    private void recursiveScrape(int depth, Element commentSection, Comment parent){
+        if(depth < 0){
+            return;
+        }
+        else{
+            //System.out.println(commentSection);
+            Elements listOfComments = commentSection.findEach("<div data-type='comment'>");
+            if(listOfComments == null){
+                return ;
+            }
+            for(Element comment: listOfComments){
+                Element next;
+                try{
+                    next = comment.findFirst("<div class='sitetable listing'>");
+                    //System.out.println(next);
+                } catch(NotFound e){
+                    System.out.println("additional children comments not found");
+                    return;
+                }
+                String author = getAuthor(comment);
+                String text = getText(comment);
+                int votes = getVotes(comment);
+                Comment temp = new Comment(parent, author, text, votes);
+                //
+                System.out.println(offset(depth) + author);
+                //System.out.println(offset(depth) + text);
+
+
+                //
+                parent.addChild(temp);
+                recursiveScrape(depth - 1, next, temp);
+            }
+            return;
+        }
+    }
+
+    private String offset(int depth){
+        String returnme = "";
+        for(int i = 0; i < depth; i++){
+            returnme += "        ";
+        }
+        return returnme;
+    }
+    private int getVotes(Element comment){
+        try {
+            Element temp = comment.findFirst("<span class='score unvoted'>");
+            return Integer.parseInt(temp.getAt("title"));
+        }
+        catch(NotFound e){
+            return -500000;
+        }
+    }
+
+    private String getAuthor(Element comment){
+        try{
+            return comment.getAt("data-author");
+        } catch(NotFound e){
+            return "Error: author not found";
+        }
+    }
+
+    private String getText(Element comment){
+        Element text;
+        try {
+            text = comment.findFirst("<div class='md'>");
+        } catch(NotFound e){
+            return "error: no post text found";
+        }
+        return text.outerHTML();
+    }
+
     public Subreddit subReddit(String url){
         UserAgent user = new UserAgent();
         try {
@@ -140,7 +260,6 @@ public class RedditScraper{
         return returnList;
     }
 
-
     private List<String> getPostTitles(UserAgent user){
         Elements titles = user.doc.findEvery("<p class=title>");//title and link to content
         List<Element> templist = titles.toList();
@@ -156,23 +275,7 @@ public class RedditScraper{
         return returnList;
     }
 
-    public Post post(String url){
-        UserAgent user = new UserAgent();
-        try{
-            user.visit(url);
-        }
-        catch(JauntException e){
-            System.err.println(e);
-        }
 
 
 
-
-        return null;
-    }
-
-    public static void main(String[]args){
-            RedditScraper user = new RedditScraper();
-            user.subReddit("http://www.reddit.com/r/random");
-    }
 }
