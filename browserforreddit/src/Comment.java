@@ -11,7 +11,15 @@ public class Comment {
 	private Comment parent;
 	private String username;
 	private String content;
-	private int votes;
+	private String votes;
+
+	/**
+	 * Default constructor for null, root comment
+	 */
+	public Comment() {
+		parent = null;
+		this.children = new ArrayList<Comment>();
+	}
 
 	/**
 	 * Constructor
@@ -20,7 +28,7 @@ public class Comment {
 	 * @param content The content of the comment
 	 * @param votes The current vote count of the comment
 	 */
-	public Comment(Comment parent, String username, String content, int votes) {
+	public Comment(Comment parent, String username, String content, String votes) {
 		this.parent = parent;
 		this.username = username;
 		this.content = content;
@@ -48,7 +56,7 @@ public class Comment {
 	 * Returns the current vote count of the post
 	 * @return Vote count
 	 */
-	public int getVotes() {
+	public String getVotes() {
 		return votes;
 	}
 

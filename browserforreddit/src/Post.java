@@ -12,9 +12,10 @@ public class Post {
 	private String username;
 	private String title;
 	private String content;
-	private List<Comment> comments;
-	private int votes;
+	private Comment root;
+	private String votes;
 	private Subreddit subreddit;
+	private String contentURL;
 
 	/**
 	 * Constructor
@@ -24,29 +25,22 @@ public class Post {
 	 * @param votes Current vote count
 	 * @param subreddit Associated subreddit
 	 */
-	public Post(String username, String title, String content, int votes, Subreddit subreddit) {
+	public Post(String username, String title, String content, String votes, String contentURL, Subreddit subreddit, Comment root) {
 		this.username = username;
 		this.title = title;
 		this.content = content;
 		this.votes = votes;
-		comments = new ArrayList<Comment>();
+		this.root = root;
 		this.subreddit = subreddit;
-	}
-
-	/**
-	 * Add a top level comment to the post
-	 * @param newComment Comment to be added
-	 */
-	public void addComment(Comment newComment) {
-		comments.add(newComment);
+		this.contentURL = contentURL;
 	}
 
 	/**
 	 * Returns the list of top level comments
 	 * @return List of top level comments
 	 */
-	public List<Comment> getComments() {
-		return comments;
+	public Comment getRoot() {
+		return root;
 	}
 
 	/**
@@ -77,8 +71,12 @@ public class Post {
 	 * Returns the current vote count
 	 * @return Votes
 	 */
-	public int getVotes() {
+	public String getVotes() {
 		return votes;
+	}
+
+	public String getContentURL() {
+		return contentURL;
 	}
 
 	/**

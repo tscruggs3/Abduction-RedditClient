@@ -7,36 +7,36 @@ import com.jaunt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RedditScraper{
-
-    public RedditScraper(){
-
-    }
+public class RedditScraper {
 
     public static void main(String[]args){
         RedditScraper user = new RedditScraper();
         //user.subReddit("http://www.reddit.com/r/random");
         user.scrapePost("https://www.reddit.com/r/politics/comments/7cqez8/the_secret_correspondence_between_donald_trump_jr/");
     }
-    public Post scrapePost(String url){
+
+    public static Post scrapePost(String url){
         UserAgent user = new UserAgent();
         try{
             user.visit(url);
         }catch (JauntException e){
+            System.err.println("ERROR: Could not open post URL!");
             return dummyPost();
         }
         Element postData = user.doc;
         try {
             postData = user.doc.findFirst("<div class='sitetable linklisting'").getElement(0);
         }catch(NotFound e){
+            System.err.println("ERROR: Could not get postData!");
             return dummyPost();
         }
-        System.out.println(postData);
+        //System.out.println(postData);
         try {
             String author = postData.getAt("data-author");
-            String votes = postData.getAt("data-score");
-            String postUrl = postData.getAt("data-permalink");
-            String title = postData.findFirst("<div class='title'>").findFirst("<a>").getText();
+            //String votes = postData.getAt("data-score");
+            //String postUrl = postData.getAt("data-permalink");
+            //String subreddit = postData.getAt("data-subreddit");
+            //String title = postData.findFirst("<div class='title'>").findFirst("<a>").getText();
             String content;
             try{
                 postData.findFirst("<div class='md'>");
@@ -45,37 +45,38 @@ public class RedditScraper{
                 content = "";
             }
             // Determine if post has content.  If not, return ""
-            return new Post(author, title, content, scrapeComments(url, user), votes);
+            return new Post(author, "title", "content", "votes", "PostURL", new Subreddit("Subreddit!") ,scrapeComments(url, user));
         }catch(NotFound e){
+            System.err.println("ERROR: Could not scrape post content!!");
             return dummyPost();
         }
 
     }
 
-    private Post dummyPost(){
-        return new Post("author", "title", "content", "scrapeComments(url, user)", "votes");
+    private static Post dummyPost(){
+        return new Post("author", "title", "content", "1", "http://www.reddit.com",new Subreddit("/r/test"),new Comment());
     }
 
-    private Comment scrapeComments(String url, UserAgent user){
+    private static Comment scrapeComments(String url, UserAgent user){
         Element commentSection;
         Comment nestedComments = new Comment();
         try {
             commentSection = user.doc.findFirst("<div class='sitetable nestedlisting'>");
-            recursiveScrape(3, commentSection, nestedComments);
+            System.out.println("Scraping comments!");
+            recursiveScrape(5, commentSection, nestedComments);
         }
         catch(NotFound e){
             System.err.println(e);
-            commentSection = user.doc;
         }
+        System.out.println("Comments scraped!");
         return nestedComments;
     }
 
-    private void recursiveScrape(int depth, Element commentSection, Comment parent){
+    private static void recursiveScrape(int depth, Element commentSection, Comment parent){
         if(depth < 0){
             return;
         }
         else{
-            //System.out.println(commentSection);
             Elements listOfComments = commentSection.findEach("<div data-type='comment'>");
             if(listOfComments == null){
                 return ;
@@ -84,21 +85,17 @@ public class RedditScraper{
                 Element next;
                 try{
                     next = comment.findFirst("<div class='sitetable listing'>");
-                    //System.out.println(next);
                 } catch(NotFound e){
                     System.out.println("additional children comments not found");
                     return;
                 }
                 String author = getAuthor(comment);
                 String text = getText(comment);
-                int votes = getVotes(comment);
+                String votes = getVotes(comment);
                 Comment temp = new Comment(parent, author, text, votes);
                 //
                 System.out.println(offset(depth) + author);
-                //System.out.println(offset(depth) + text);
 
-
-                //
                 parent.addChild(temp);
                 recursiveScrape(depth - 1, next, temp);
             }
@@ -106,24 +103,25 @@ public class RedditScraper{
         }
     }
 
-    private String offset(int depth){
+    private static String offset(int depth){
         String returnme = "";
         for(int i = 0; i < depth; i++){
             returnme += "        ";
         }
         return returnme;
     }
-    private int getVotes(Element comment){
+
+    private static String getVotes(Element comment){
         try {
             Element temp = comment.findFirst("<span class='score unvoted'>");
-            return Integer.parseInt(temp.getAt("title"));
+            return temp.getAt("title");
         }
         catch(NotFound e){
-            return -500000;
+            return "[score hidden]";
         }
     }
 
-    private String getAuthor(Element comment){
+    private static String getAuthor(Element comment){
         try{
             return comment.getAt("data-author");
         } catch(NotFound e){
@@ -131,7 +129,7 @@ public class RedditScraper{
         }
     }
 
-    private String getText(Element comment){
+    private static String getText(Element comment){
         Element text;
         try {
             text = comment.findFirst("<div class='md'>");
@@ -141,7 +139,7 @@ public class RedditScraper{
         return text.outerHTML();
     }
 
-    public Subreddit subReddit(String url){
+    public static Subreddit scrapeSubreddit(String url){
         UserAgent user = new UserAgent();
         try {
             user.visit(url);
@@ -162,13 +160,7 @@ public class RedditScraper{
         List<String> numUpvotes = getNumUpvotes(user);
         List<String> linksToComments = getLinksToComments(user);
         List<String> numComments = getNumComments(user);
-        System.out.println(titles);
-        System.out.println(postLinks);
-        System.out.println(usernames);
-        System.out.println(numUpvotes);
-        System.out.println(linksToComments);
-        System.out.println(numComments);
-        Subreddit subreddit = new Subreddit(title, "");
+        Subreddit subreddit = new Subreddit(title);
         for(int i = 0; i < postLinks.size(); i++){
             PostPreview post = new PostPreview(postLinks.get(i), linksToComments.get(i), usernames.get(i),
                         titles.get(i), numUpvotes.get(i), numComments.get(i));
@@ -177,7 +169,7 @@ public class RedditScraper{
         return subreddit;
     }
 
-    private List<String> getPostLinks(UserAgent user) {
+    private static List<String> getPostLinks(UserAgent user) {
        Elements titles = user.doc.findEvery("<p class=title>");//title and link to content
        List<Element> templist = titles.toList();
        List<String> returnList = new ArrayList<String>();
@@ -192,7 +184,7 @@ public class RedditScraper{
        return returnList;
     }
 
-    private List<String> getNumComments(UserAgent user) {
+    private static List<String> getNumComments(UserAgent user) {
         Elements linksToComments = user.doc.findEvery("<li class=first");//getElement(0);
         List<Element> templist = linksToComments.toList();
         List<String> returnList = new ArrayList<String>();
@@ -208,7 +200,7 @@ public class RedditScraper{
         return returnList;
     }
 
-    private List<String> getLinksToComments(UserAgent user) {
+    private static List<String> getLinksToComments(UserAgent user) {
         Elements linksToComments = user.doc.findEvery("<li class=first");//getElement(0);
         List<Element> templist = linksToComments.toList();
         List<String> returnList = new ArrayList<String>();
@@ -224,7 +216,7 @@ public class RedditScraper{
         return returnList;
     }
 
-    private List<String> getNumUpvotes(UserAgent user) {
+    private static List<String> getNumUpvotes(UserAgent user) {
         Elements upvotes = user.doc.findEvery("<div class='score unvoted'>");
         List<Element> templist = upvotes.toList();
         List<String> returnList = new ArrayList<String>();
@@ -240,7 +232,7 @@ public class RedditScraper{
         return returnList;
     }
 
-    private List<String> getUsers(UserAgent user){
+    private static List<String> getUsers(UserAgent user){
         Elements users = user.doc.findEvery("<p class='tagline '");
         List<Element> templist = users.toList();
         List<String> returnList = new ArrayList<String>();
@@ -260,7 +252,7 @@ public class RedditScraper{
         return returnList;
     }
 
-    private List<String> getPostTitles(UserAgent user){
+    private static List<String> getPostTitles(UserAgent user){
         Elements titles = user.doc.findEvery("<p class=title>");//title and link to content
         List<Element> templist = titles.toList();
         List<String> returnList = new ArrayList<String>();

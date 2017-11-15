@@ -43,23 +43,16 @@ public class PostGUI {
      * @return Scene
      */
     public Scene getScene(Post post) {
-        BorderPane page = new BorderPane();
-        /* Top: Back button, subreddit link, user link
-         * Right: Sidebar content
-         * Center: VBox of comments
-         */
-
-        Pane sidebar = buildSidebar(post);
+        Pane page = new VBox();
         Pane title = buildTitle(post);
+        System.out.println("Built title!");
         Pane comments = buildComments(post);
+        System.out.println("Built comments!!");
 
-        BorderPane.setAlignment(sidebar, Pos.CENTER_RIGHT);
-
-        page.setRight(sidebar);
-        page.setTop(title);
-        page.setCenter(comments);
+        page.getChildren().addAll(title,comments);
 
         Scene scene = new Scene(page, SCENE_WIDTH, SCENE_HEIGHT);
+        System.out.println("Returning rendered scene!");
         return scene;
     }
 
@@ -77,9 +70,16 @@ public class PostGUI {
     // Comment recursion
     private void recursiveIndex(Comment comment, ArrayList<Node> output) {
         output.add(createCommentNode(comment));
-        for (Comment child : comment.getChildren()) {
-            recursiveIndex(child, output);
+        System.out.println(comment.getUsername() + " " + comment.getVotes());
+        List<Comment> children = comment.getChildren();
+        System.out.println(children.size());
+        for (int i = 0; i < children.size(); i++) {
+            Comment child = children.get(i);
+            recursiveIndex(child,output);
+            System.out.println(child.getUsername() + " " + child.getVotes());
+
         }
+        System.out.println("Done iterating over comments!");
     }
 
     private Pane createCommentNode(Comment comment) {
@@ -93,7 +93,7 @@ public class PostGUI {
         upvote.setMinWidth(MIN_UPVOTE_WIDTH);
         postPane.add(upvote, 1, 0);
 
-        Text voteCount = new Text(Integer.toString(comment.getVotes()));
+        Text voteCount = new Text(comment.getVotes());
         voteCount.setTextAlignment(TextAlignment.CENTER);
         GridPane.setHalignment(voteCount, HPos.CENTER);
         postPane.add(voteCount, 1, 1);
@@ -130,21 +130,23 @@ public class PostGUI {
     }
 
     private Pane buildComments(Post post) {
-        // Depth-first traversal of the tree.
-        // Place everything in a vbox, then put that in the ScrollFrame
-        // VBox.getChildren().add()
+        // Depth-first traversal of the comment tree.
 
         ArrayList<Node> renderList = new ArrayList<Node>();
 
-        for (Comment comment : post.getComments()) {
-            recursiveIndex(comment, renderList);
+        List<Comment> commentList = post.getRoot().getChildren();
+        System.out.println("Top Level Comments: " + commentList.size());
+        for (int i = 0; i < commentList.size(); i++) {
+            recursiveIndex(commentList.get(i), renderList);
+            System.out.println("Iterated " + i + "Times");
         }
+        System.out.println("Got comments.");
 
         VBox comments = new VBox();
         List children = comments.getChildren();
 
-        for (Node comment : renderList) {
-            children.add(comment);
+        for (int i = 0; i < renderList.size(); i++) {
+            children.add(renderList.get(i));
         }
 
         return comments;
@@ -165,22 +167,13 @@ public class PostGUI {
         Text postName = new Text(post.getTitle() + " by");
         postName.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
         Hyperlink author = new Hyperlink(post.getUsername());
-        author.setOnAction(evt -> controller.requestPage("/u/janedoe"));
+        author.setOnAction(evt -> controller.requestUserPage("reddit.com/user/"+ post.getUsername()));
         author.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
 
         HBox title = new HBox(5,back, subredditName, postName, author);
         title.setAlignment(Pos.BOTTOM_LEFT);
         title.setPadding(new Insets(0,0,20,0));
         return title;
-    }
-
-    private Pane buildSidebar(Post post) {
-        WebView sidebarContent = new WebView();
-        sidebarContent.setMaxWidth(200);
-        sidebarContent.getEngine().loadContent(post.getSubreddit().getSidebarContent());
-        FlowPane bin = new FlowPane(sidebarContent);
-        bin.setMaxWidth(200);
-        return bin;
     }
 
 }

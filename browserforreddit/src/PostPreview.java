@@ -11,7 +11,8 @@ public class PostPreview {
 	private String commentURL; // url to the associated comment thread
 	private String username;
 	private String title;
-	private int vote;
+	private String vote;
+	private String numComments;
 
 	/**
 	 * Constructor
@@ -21,12 +22,21 @@ public class PostPreview {
 	 * @param title The title of the post
 	 * @param vote The current vote count of the post
 	 */
-	public PostPreview(String contentURL, String commentURL, String username, String title, int vote) {
+	public PostPreview(String contentURL, String commentURL, String username, String title, String vote, String numComments) {
 		this.contentURL = contentURL;
 		this.commentURL = commentURL;
 		this.username = username;
 		this.title = title;
 		this.vote = vote;
+		this.numComments = numComments;
+	}
+
+	/**
+	 * Returns the number of comments in a post
+	 * @return Number of comments
+	 */
+	public String getNumComments() {
+		return numComments;
 	}
 
 	/**
@@ -65,7 +75,7 @@ public class PostPreview {
 	 * Returns the current vote count of the post
 	 * @return votes
 	 */
-	public int getVote() {
+	public String getVote() {
 		return vote;
 	}
 }

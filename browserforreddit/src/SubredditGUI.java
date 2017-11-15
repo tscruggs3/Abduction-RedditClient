@@ -148,7 +148,7 @@ public class SubredditGUI {
         Text postNumb = new Text(Integer.toString(postNumber));
         postPane.add(postNumb, 0, 1);
 
-        Text voteCount = new Text("         " + Integer.toString(postPreview.getVote()));
+        Text voteCount = new Text("         " + postPreview.getVote());
         postPane.add(voteCount, 1, 1);
 
         upvote.setOnAction(new EventHandler<ActionEvent>() {
@@ -156,20 +156,20 @@ public class SubredditGUI {
             public void handle(ActionEvent event) {
                upvote.setTextFill(Color.GREEN);
                //TODO: tell controller to increase vote by 1
-                voteCount.setText("         " + Integer.toString(postPreview.getVote()));
+                voteCount.setText("         " + postPreview.getVote());
             }
         });
 
 
         Hyperlink postContent = new Hyperlink(postPreview.getTitle());
         postContent.setMinWidth(MIN_TITLE_WIDTH);
-        postContent.setOnAction(evt -> controller.requestPage(postPreview.getContentURL()));
+        postContent.setOnAction(evt -> controller.requestContentPage(postPreview.getContentURL()));
         postPane.add(postContent, 2, 1);
 
         String userEntry = "By " + postPreview.getUsername();
         Hyperlink username = new Hyperlink(userEntry);
         username.setMinWidth(MIN_TITLE_WIDTH);
-        username.setOnAction(evt -> controller.requestPage(postPreview.getUsername()));
+        username.setOnAction(evt -> controller.requestUserPage("http://www.reddit.com/user/"+postPreview.getUsername()));
         postPane.add(username, 3, 1);
 
         Button downvote = new Button("-");
@@ -181,13 +181,13 @@ public class SubredditGUI {
             public void handle(ActionEvent event) {
                 downvote.setTextFill(Color.RED);
                 //TODO: tell controller to decrease vote by 1
-                voteCount.setText("         " + Integer.toString(postPreview.getVote()));
+                voteCount.setText("         " + postPreview.getVote());
             }
         });
 
         Button comments = new Button("Comments");
         comments.setMinWidth(MIN_UPVOTE_WIDTH);
-        comments.setOnAction(evt -> controller.requestPage(postPreview.getCommentURL()));
+        comments.setOnAction(evt -> controller.requestPostPage(postPreview.getCommentURL()));
         postPane.add(comments, 3, 2);
 
         return postPane;

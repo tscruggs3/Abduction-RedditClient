@@ -10,17 +10,14 @@ import java.util.ArrayList;
 public class Subreddit {
 
 	private String title;
-	private String sidebarContent;
 	private List<PostPreview> postList;
 
 	/**
 	 * Constructor
 	 * @param title The title of the subreddit
-	 * @param sidebarContent The HTML sidebar content of the subreddit
 	 */
-	public Subreddit(String title, String sidebarContent) {
+	public Subreddit(String title) {
 		this.title = title;
-		this.sidebarContent = sidebarContent;
 		postList = new ArrayList<PostPreview>();
 	}
 
@@ -38,14 +35,6 @@ public class Subreddit {
 	 */
 	public String getTitle() {
 		return title;
-	}
-
-	/**
-	 * Returns the sidebar content of the subreddit
-	 * @return HTML Sidebar Content as a String
-	 */
-	public String getSidebarContent() {
-		return sidebarContent;
 	}
 
 	/**

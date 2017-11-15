@@ -155,13 +155,13 @@ public class UserGUI  {
         Text postNumb = new Text(Integer.toString(postNumber));
         postPane.add(postNumb, 0, 1);
 
-        Label voteCount = new Label(Integer.toString(postPreview.getVote()));
+        Label voteCount = new Label(postPreview.getVote());
         postPane.add(voteCount, 1, 1);
         postPane.setHalignment(voteCount, HPos.CENTER);
 
         Hyperlink postContent = new Hyperlink(postPreview.getTitle());
         postContent.setMinWidth(MIN_TITLE_WIDTH/2);
-        postContent.setOnAction(evt -> controller.requestPage("page1"));
+        postContent.setOnAction(evt -> controller.requestContentPage(postPreview.getContentURL()));
         postPane.add(postContent, 2, 1);
 
         String userEntry = "By " + postPreview.getUsername();
@@ -186,7 +186,7 @@ public class UserGUI  {
    //but I'm not sure
     private VBox addComments(List<CommentPreview> commentList) {
         VBox commentVBox = new VBox();
-        for (int i = 0; i < POSTS_PER_PAGE; i ++){
+        for (int i = 0; i < commentList.size(); i ++){
             GridPane comment = addCommentPreview(i, commentList.get(i));
             commentVBox.getChildren().add(comment);
         }
@@ -215,7 +215,7 @@ public class UserGUI  {
 
         Hyperlink commentContent = new Hyperlink(commentPreview.getTitle());
         commentContent.setMinWidth(MIN_TITLE_WIDTH/2);
-        commentContent.setOnAction(evt -> controller.requestPage("post1"));
+        commentContent.setOnAction(evt -> controller.requestPostPage(commentPreview.getURL()));
         commentPane.add(commentContent, 2, 1);
 
         Button downvote = new Button("-");
