@@ -33,10 +33,10 @@ public class RedditScraper {
         //System.out.println(postData);
         try {
             String author = postData.getAt("data-author");
-            //String votes = postData.getAt("data-score");
-            //String postUrl = postData.getAt("data-permalink");
-            //String subreddit = postData.getAt("data-subreddit");
-            //String title = postData.findFirst("<div class='title'>").findFirst("<a>").getText();
+            String votes = postData.getAt("data-score");
+            String postUrl = postData.getAt("data-permalink");
+            String subreddit = postData.getAt("data-subreddit");
+            String title = postData.findFirst("<div class='top-matter'>").findFirst("<a>").getText();
             String content;
             try{
                 postData.findFirst("<div class='md'>");
@@ -45,7 +45,7 @@ public class RedditScraper {
                 content = "";
             }
             // Determine if post has content.  If not, return ""
-            return new Post(author, "title", "content", "votes", "PostURL", new Subreddit("Subreddit!") ,scrapeComments(url, user));
+            return new Post(author, title, content, votes, postUrl, new Subreddit(subreddit) ,scrapeComments(url, user));
         }catch(NotFound e){
             System.err.println("ERROR: Could not scrape post content!!");
             return dummyPost();
@@ -62,7 +62,6 @@ public class RedditScraper {
         Comment nestedComments = new Comment();
         try {
             commentSection = user.doc.findFirst("<div class='sitetable nestedlisting'>");
-            System.out.println("Scraping comments!");
             recursiveScrape(5, commentSection, nestedComments);
         }
         catch(NotFound e){
@@ -86,15 +85,13 @@ public class RedditScraper {
                 try{
                     next = comment.findFirst("<div class='sitetable listing'>");
                 } catch(NotFound e){
-                    System.out.println("additional children comments not found");
                     return;
                 }
                 String author = getAuthor(comment);
                 String text = getText(comment);
                 String votes = getVotes(comment);
                 Comment temp = new Comment(parent, author, text, votes);
-                //
-                System.out.println(offset(depth) + author);
+                //System.out.println(offset(depth) + author);
 
                 parent.addChild(temp);
                 recursiveScrape(depth - 1, next, temp);
@@ -117,7 +114,7 @@ public class RedditScraper {
             return temp.getAt("title");
         }
         catch(NotFound e){
-            return "[score hidden]";
+            return "0";
         }
     }
 
@@ -239,7 +236,7 @@ public class RedditScraper {
         for(int i = 0; i < templist.size(); i++){
             try {
                 Element item = templist.get(i).findFirst("<a>");
-                String link = item.getAt("href");
+                String link = item.getText();
                 //Test for whether or not the user has been deleted
                 if (link.contains("/r/")){
                     link = "Deleted";

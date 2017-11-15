@@ -49,7 +49,7 @@ public class UserGUI  {
       //should not be present in finalized version
         
         BorderPane root = new BorderPane();
-        root.setPrefSize(1200,600);
+        root.setPrefSize(SCENE_WIDTH,SCENE_HEIGHT);
         VBox userInfo = createUserInfo(user);
         //VBox postsPane = addPosts(user.getPosts());
         VBox commentsPane = addComments(user.getComments());
@@ -58,7 +58,7 @@ public class UserGUI  {
         //root.setCenter(postsPane);
         root.setCenter(commentsPane);
    
-        Scene scene = new Scene(root, 1200, 600);
+        Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         return scene;
     }
 

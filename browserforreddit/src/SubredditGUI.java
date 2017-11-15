@@ -64,7 +64,7 @@ public class SubredditGUI {
         titlePane.setAlignment(Pos.TOP_LEFT);
 
         Text heading = new Text(title);
-        heading.setFont(Font.font("Verdana", FontWeight.BOLD, 60));
+        heading.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
         titlePane.getChildren().add(heading);
 
         return titlePane;
@@ -124,7 +124,7 @@ public class SubredditGUI {
 
     private VBox addPosts(List<PostPreview> postList) {
         VBox postsVBox = new VBox();
-        int numbPosts = Math.min(POSTS_PER_PAGE, postList.size());
+        int numbPosts = postList.size();
 
         for (int i = 0; i < numbPosts; i ++){
             GridPane post = addPostPreview(i+1, postList.get(i));
@@ -140,26 +140,11 @@ public class SubredditGUI {
         postPane.setVgap(0);
         postPane.setHgap(5);
 
-
-        Button upvote = new Button("+");
-        upvote.setMinWidth(MIN_UPVOTE_WIDTH);
-        postPane.add(upvote, 1, 0);
-
         Text postNumb = new Text(Integer.toString(postNumber));
         postPane.add(postNumb, 0, 1);
 
         Text voteCount = new Text("         " + postPreview.getVote());
         postPane.add(voteCount, 1, 1);
-
-        upvote.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-               upvote.setTextFill(Color.GREEN);
-               //TODO: tell controller to increase vote by 1
-                voteCount.setText("         " + postPreview.getVote());
-            }
-        });
-
 
         Hyperlink postContent = new Hyperlink(postPreview.getTitle());
         postContent.setMinWidth(MIN_TITLE_WIDTH);
@@ -169,26 +154,13 @@ public class SubredditGUI {
         String userEntry = "By " + postPreview.getUsername();
         Hyperlink username = new Hyperlink(userEntry);
         username.setMinWidth(MIN_TITLE_WIDTH);
-        username.setOnAction(evt -> controller.requestUserPage("http://www.reddit.com/user/"+postPreview.getUsername()));
+        username.setOnAction(evt -> controller.requestUserPage("http://www.reddit.com/user/"+ postPreview.getUsername()));
         postPane.add(username, 3, 1);
 
-        Button downvote = new Button("-");
-        downvote.setMinWidth(MIN_UPVOTE_WIDTH);
-        postPane.add(downvote, 1, 2);
-
-        downvote.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                downvote.setTextFill(Color.RED);
-                //TODO: tell controller to decrease vote by 1
-                voteCount.setText("         " + postPreview.getVote());
-            }
-        });
-
-        Button comments = new Button("Comments");
+        Hyperlink comments = new Hyperlink(postPreview.getNumComments());
         comments.setMinWidth(MIN_UPVOTE_WIDTH);
         comments.setOnAction(evt -> controller.requestPostPage(postPreview.getCommentURL()));
-        postPane.add(comments, 3, 2);
+        postPane.add(comments, 2, 2);
 
         return postPane;
     }

@@ -1,10 +1,15 @@
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -46,7 +51,7 @@ public class PostGUI {
         Pane page = new VBox();
         Pane title = buildTitle(post);
         System.out.println("Built title!");
-        Pane comments = buildComments(post);
+        ScrollPane comments = buildComments(post);
         System.out.println("Built comments!!");
 
         page.getChildren().addAll(title,comments);
@@ -67,6 +72,12 @@ public class PostGUI {
         return count;
     }
 
+    private void addTopLevel(Comment comment, ArrayList<Node> output) {
+        for (Comment child: comment.getChildren()) {
+            output.add(createCommentNode(child));
+        }
+    }
+
     // Comment recursion
     private void recursiveIndex(Comment comment, ArrayList<Node> output) {
         output.add(createCommentNode(comment));
@@ -85,37 +96,47 @@ public class PostGUI {
     private Pane createCommentNode(Comment comment) {
         GridPane postPane = new GridPane();
         postPane.setPadding(new Insets(0, 5, 5, 5 + 50 * getParentCount(comment)));
-        postPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
-        postPane.setVgap(0);
-        postPane.setHgap(5);
-
-        Button upvote = new Button("+");
-        upvote.setMinWidth(MIN_UPVOTE_WIDTH);
-        postPane.add(upvote, 1, 0);
+        postPane.setMaxSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
 
         Text voteCount = new Text(comment.getVotes());
         voteCount.setTextAlignment(TextAlignment.CENTER);
-        GridPane.setHalignment(voteCount, HPos.CENTER);
-        postPane.add(voteCount, 1, 1);
+        postPane.add(voteCount, 0,0);
+        ColumnConstraints col0 = new ColumnConstraints();
+        col0.setMaxWidth(30);
+        col0.setMinWidth(30);
+
+        Separator separateVotesAndUser = new Separator();
+        separateVotesAndUser.setOrientation(Orientation.VERTICAL);
+        postPane.add(separateVotesAndUser, 1,0);
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setMaxWidth(5);
+        col1.setMinWidth(5);
+
+
+        Hyperlink username = new Hyperlink(comment.getUsername());
+        username.setOnAction(evt -> controller.requestUserPage("http://www.reddit.com/user/"+ comment.getUsername()));
+        postPane.add(username, 2,0);
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setMaxWidth(200);
+        col2.setMinWidth(200);
+
+        Separator separateUserAndContent = new Separator();
+        separateUserAndContent.setOrientation(Orientation.VERTICAL);
+        postPane.add(separateUserAndContent, 1,1);
+        ColumnConstraints col3 = new ColumnConstraints();
+        col3.setMaxWidth(5);
+        col3.setMinWidth(5);
 
         Text content = new Text(comment.getContent());
-        postPane.add(content, 2, 1);
-
-        Text username = new Text(comment.getUsername());
-        postPane.add(username, 2, 0);
-
-        Button downvote = new Button("-");
-        downvote.setMinWidth(MIN_UPVOTE_WIDTH);
-        postPane.add(downvote, 1, 2);
+        content.setWrappingWidth(SCENE_WIDTH/3);
+        postPane.add(content, 2,1);
 
         /*
-        TODO: Implement outlines
-
         Rectangle outline = new Rectangle();
-        outline.setX(0);
+        outline.setX(50 * getParentCount(comment));
         outline.setY(0);
-        outline.setHeight(100);
-        outline.setWidth(200);
+        outline.setHeight(postPane.getPrefHeight());
+        outline.setWidth(SCENE_WIDTH / 2);
         outline.setFill(null);
         outline.setStroke(Color.BLACK);
         outline.setStrokeWidth(2);
@@ -123,24 +144,28 @@ public class PostGUI {
         outline.setArcWidth(20);
         */
 
+        postPane.getColumnConstraints().addAll(col0,col1,col2,col3);
+
         StackPane result = new StackPane(postPane);
         result.setAlignment(Pos.CENTER_LEFT);
 
         return result;
     }
 
-    private Pane buildComments(Post post) {
+    private ScrollPane buildComments(Post post) {
         // Depth-first traversal of the comment tree.
 
         ArrayList<Node> renderList = new ArrayList<Node>();
 
+        /*
         List<Comment> commentList = post.getRoot().getChildren();
         System.out.println("Top Level Comments: " + commentList.size());
         for (int i = 0; i < commentList.size(); i++) {
             recursiveIndex(commentList.get(i), renderList);
             System.out.println("Iterated " + i + "Times");
         }
-        System.out.println("Got comments.");
+        */
+        addTopLevel(post.getRoot(), renderList);
 
         VBox comments = new VBox();
         List children = comments.getChildren();
@@ -149,7 +174,10 @@ public class PostGUI {
             children.add(renderList.get(i));
         }
 
-        return comments;
+        ScrollPane window = new ScrollPane(comments);
+        window.setFitToWidth(true);
+
+        return window;
     }
 
     private Pane buildTitle(Post post) {
@@ -163,16 +191,20 @@ public class PostGUI {
         back.setGraphic(processedImage);
 
         Text subredditName = new Text(post.getSubreddit().getTitle()+"/ ");
-        subredditName.setFont(Font.font("Verdana", FontWeight.BOLD, 60));
-        Text postName = new Text(post.getTitle() + " by");
-        postName.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        Hyperlink author = new Hyperlink(post.getUsername());
-        author.setOnAction(evt -> controller.requestUserPage("reddit.com/user/"+ post.getUsername()));
-        author.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+        subredditName.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
 
-        HBox title = new HBox(5,back, subredditName, postName, author);
-        title.setAlignment(Pos.BOTTOM_LEFT);
-        title.setPadding(new Insets(0,0,20,0));
+        Text postName = new Text(post.getTitle());
+        postName.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        postName.setWrappingWidth(SCENE_WIDTH / 3);
+
+        Hyperlink author = new Hyperlink("by " + post.getUsername());
+        author.setOnAction(evt -> controller.requestUserPage("reddit.com/user/"+ post.getUsername()));
+        author.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        author.setMaxWidth(200);
+
+        HBox title = new HBox(back, subredditName,postName,author);
+
+        title.setAlignment(Pos.CENTER_LEFT);
         return title;
     }
 

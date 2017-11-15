@@ -23,7 +23,7 @@ public class Comment {
 
 	/**
 	 * Constructor
-	 * @param parent The parent of the comment. Set to 'null' if no parent exists.
+	 * @param parent The parent of the comment. Set to 'null' if no parent exists. &#39;
 	 * @param username The username of the comment submitter
 	 * @param content The content of the comment
 	 * @param votes The current vote count of the comment
@@ -31,7 +31,8 @@ public class Comment {
 	public Comment(Comment parent, String username, String content, String votes) {
 		this.parent = parent;
 		this.username = username;
-		this.content = content;
+		this.content = content.replaceAll("\\<.*?>","");
+		this.content = this.content.replaceAll("&#39;","'");
 		this.votes = votes;
 		this.children = new ArrayList<Comment>();
 	}

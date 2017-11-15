@@ -25,7 +25,7 @@ public class RedditController extends Application {
         userRender = new UserGUI(this);
         mainStage = primaryStage;
         pages = new ArrayDeque<Scene>();
-        requestPostPage("https://www.reddit.com/r/PrequelMemes/comments/7d0k4i/after_playing_3700_hours_of_battlefront_2/"); // Initial Page
+        requestSubredditPage("http://www.reddit.com/r/showerthoughts"); // Initial Page
         primaryStage.show();
     }
 
@@ -64,8 +64,8 @@ public class RedditController extends Application {
 
     private Scene getInitialScene() {
         Subreddit dummy = new Subreddit("r/test");
-        PostPreview post1 = new PostPreview("post1", "post1","/u/janedoe","test post plz ignore","99191","32");
-        PostPreview post2 = new PostPreview("post1", "post1","/u/janedoe","give me karma","-32000","32");
+        PostPreview post1 = new PostPreview("post1", "post1","janedoe","test post plz ignore","99191","32");
+        PostPreview post2 = new PostPreview("post1", "post1","janedoe","give me karma","-32000","32");
         dummy.addPostPreview(post1);
         dummy.addPostPreview(post2);
 
@@ -73,7 +73,7 @@ public class RedditController extends Application {
     }
 
     private User buildFakeUser() {
-        User something =  new User("u/janedoe",122,33333);
+        User something =  new User("janedoe",122,33333);
         return something;
     }
 
