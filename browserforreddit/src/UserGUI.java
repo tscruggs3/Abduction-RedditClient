@@ -1,6 +1,3 @@
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.HPos;
@@ -14,37 +11,18 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import java.util.List;
-import java.util.ArrayList;
 
-public class UserGUI  {
-    private static final double SCENE_WIDTH = 1020;
-    private static final double SCENE_HEIGHT = 765;
-    private static final double MIN_UPVOTE_WIDTH = 30;
-    private static final double MIN_TITLE_WIDTH = 250;
-    private static final double POSTS_PER_PAGE = 2;
-    private RedditController controller;
+public class UserGUI implements SceneRender {
 
-   /**
-    *Creates the controller for the UserGUI interface.
-    *This method is called every time the UserGUI is created and used
-    * so that the controller can see what buttons/links are clicked on and
-    *display the appropiate information.
-    *@param controller a controller object that display all appropiate information when asked for
-    */
-    public UserGUI(RedditController controller) {
-        this.controller = controller;
-    }
-    
    /**
     *Creates the scene for a UserGUI page. This scene displays all posts and comments for the user. 
     *Also displays all relevant user information usch as CommentKarma, PostKarma, and links to all posts/comments
     *@param user a User object that is fed into the method which then gets all relevant information for that given User
     *@return the GUI for a given User to display all posts/comments/information
     */
-    public Scene getScene(User user) {
+    public static Scene getScene(User user) {
       //adding dummy data to test out the design
       //should not be present in finalized version
         
@@ -64,16 +42,16 @@ public class UserGUI  {
 
    //Creates a VBox on the Top of the BorderPane with all info of the user
    //We can change the font/size/color of stuff if we want to later
-    private VBox createUserInfo(User user) {
-      VBox info = new VBox(15);
+    private static VBox createUserInfo(User user) {
+        VBox info = new VBox(15);
 
         Label username  = new Label("/u/" + user.getUsername());
         username.setFont(Font.font("Verdana", FontWeight.BOLD, 60));
 
         Button back = new Button();
-        Image backImage = new Image(getClass().getResourceAsStream("images/back.png"));
+        Image backImage = new Image(UserGUI.class.getResourceAsStream("images/back.png"));
         ImageView processedImage = new ImageView(backImage);
-        back.setOnAction(evt -> controller.requestBack());
+        back.setOnAction(evt -> RedditController.requestBack());
         processedImage.setFitHeight(75);
         processedImage.setFitWidth(75);
         back.setGraphic(processedImage);
@@ -88,7 +66,7 @@ public class UserGUI  {
     }
     
     //Adds the posts/comments buttons that switch the information shown below the topPane of BorderPane
-    private Node addButtons(){
+    private static Node addButtons(){
       GridPane button = new GridPane();
       button.setAlignment(Pos.CENTER);
       
@@ -107,7 +85,7 @@ public class UserGUI  {
     
     //Scraps all relevant information of a user to display it on their page.
     //User is given to the scene at the very begining
-    private Node addNums(User user){
+    private static Node addNums(User user){
        GridPane nums = new GridPane();
        nums.setAlignment(Pos.CENTER);
       
@@ -129,100 +107,28 @@ public class UserGUI  {
        return nums;
       }
 
-   //Creates a VBox of posts for this user and allows users to up/down vote the 
-   //corresponding posts if they want
-   private VBox addPosts(List<PostPreview> postList) {
+   //Creates a VBox of posts for this user
+   private static VBox addPosts(List<PostPreview> postList) {
         VBox postsVBox = new VBox();
-        for (int i = 0; i < POSTS_PER_PAGE; i ++){
-            GridPane post = addPostPreview(i, postList.get(i));
+        for (int i = 0; i < postList.size(); i ++){
+            Node post = SceneRender.buildPostPreview(i, postList.get(i));
             postsVBox.getChildren().add(post);
         }
         return postsVBox;
-    }
-    
-    //Helper method to add all posts into the VBox CenterPane
-    private GridPane addPostPreview(int postNumber, PostPreview postPreview) {
-        GridPane postPane = new GridPane();
-        postPane.setPadding(new Insets(0,10,0,10));
-        postPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
-        postPane.setVgap(0);
-        postPane.setHgap(5);
-
-        Button upvote = new Button("+");
-        upvote.setMinWidth(MIN_UPVOTE_WIDTH);
-        postPane.add(upvote, 1, 0);
-
-        Text postNumb = new Text(Integer.toString(postNumber));
-        postPane.add(postNumb, 0, 1);
-
-        Label voteCount = new Label(postPreview.getVote());
-        postPane.add(voteCount, 1, 1);
-        postPane.setHalignment(voteCount, HPos.CENTER);
-
-        Hyperlink postContent = new Hyperlink(postPreview.getTitle());
-        postContent.setMinWidth(MIN_TITLE_WIDTH/2);
-        postContent.setOnAction(evt -> controller.requestContentPage(postPreview.getContentURL()));
-        postPane.add(postContent, 2, 1);
-
-        String userEntry = "By " + postPreview.getUsername();
-        Text username = new Text(userEntry);
-        postPane.add(username, 3, 1);
-
-        Button downvote = new Button("-");
-        downvote.setMinWidth(MIN_UPVOTE_WIDTH);
-        postPane.add(downvote, 1, 2);
-
-        Button comments = new Button("Comments");
-        comments.setMinWidth(MIN_UPVOTE_WIDTH);
-        /* TODO on click, the comments button should go to the comments page
-         */
-        postPane.add(comments, 3, 2);
-
-        return postPane;
     }
 
    //Creates the comment VBox for this user that can then be up/down voted
    //Also, should we add the 'context' button? I guess thats the URL variable of commentList
    //but I'm not sure
-    private VBox addComments(List<CommentPreview> commentList) {
+    private static VBox addComments(List<CommentPreview> commentList) {
         VBox commentVBox = new VBox();
         for (int i = 0; i < commentList.size(); i ++){
-            GridPane comment = addCommentPreview(i, commentList.get(i));
+            Node comment = SceneRender.buildCommentPreview(i, commentList.get(i));
             commentVBox.getChildren().add(comment);
         }
         return commentVBox;
     }
     
-    //Helper method to create the scheme of the displayed comment
-    //shows relevant info such as up/down cote, main content
-    private GridPane addCommentPreview(int commentNumber, CommentPreview commentPreview) {
-        GridPane commentPane = new GridPane();
-        commentPane.setPadding(new Insets(10,10,10,10));
-        commentPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
-        commentPane.setVgap(0);
-        commentPane.setHgap(5);
 
-        Button upvote = new Button("+");
-        upvote.setMinWidth(MIN_UPVOTE_WIDTH);
-        commentPane.add(upvote, 1, 0);
-
-        Text commentNumb = new Text(Integer.toString(commentNumber));
-        commentPane.add(commentNumb, 0, 1);
-
-        Label voteCount = new Label(Integer.toString(commentPreview.getVote()));
-        commentPane.add(voteCount, 1, 1);
-        commentPane.setHalignment(voteCount, HPos.CENTER);
-
-        Hyperlink commentContent = new Hyperlink(commentPreview.getTitle());
-        commentContent.setMinWidth(MIN_TITLE_WIDTH/2);
-        commentContent.setOnAction(evt -> controller.requestPostPage(commentPreview.getURL()));
-        commentPane.add(commentContent, 2, 1);
-
-        Button downvote = new Button("-");
-        downvote.setMinWidth(MIN_UPVOTE_WIDTH);
-        commentPane.add(downvote, 1, 2);
-
-        return commentPane;
-    }
 
 }

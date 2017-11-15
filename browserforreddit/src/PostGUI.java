@@ -26,28 +26,14 @@ import java.util.List;
  * @author Jordan Sybesma
  */
 
-public class PostGUI {
-
-    private static final double SCENE_WIDTH = 1020;
-    private static final double SCENE_HEIGHT = 765;
-    private static final double MIN_UPVOTE_WIDTH = 30;
-    private static final double MIN_TITLE_WIDTH = 250;
-    private RedditController controller;
-
-    /**
-     * Constructor
-     * @param controller The controlling class that observes events triggered on Post pages
-     */
-    public PostGUI(RedditController controller) {
-        this.controller = controller;
-    }
+public class PostGUI implements SceneRender {
 
     /**
      * Returns a scene given scraped post data
      * @param post Scraped post data
      * @return Scene
      */
-    public Scene getScene(Post post) {
+    public static Scene getScene(Post post) {
         Pane page = new VBox();
         Pane title = buildTitle(post);
         System.out.println("Built title!");
@@ -62,7 +48,7 @@ public class PostGUI {
     }
 
     // Helper method for comment recursion
-    private int getParentCount(Comment comment) {
+    private static int getParentCount(Comment comment) {
         int count = 0;
         Comment current = comment;
         while (current.getParent() != null) {
@@ -72,14 +58,14 @@ public class PostGUI {
         return count;
     }
 
-    private void addTopLevel(Comment comment, ArrayList<Node> output) {
+    private static void addTopLevel(Comment comment, ArrayList<Node> output) {
         for (Comment child: comment.getChildren()) {
             output.add(createCommentNode(child));
         }
     }
 
     // Comment recursion
-    private void recursiveIndex(Comment comment, ArrayList<Node> output) {
+    private static void recursiveIndex(Comment comment, ArrayList<Node> output) {
         output.add(createCommentNode(comment));
         System.out.println(comment.getUsername() + " " + comment.getVotes());
         List<Comment> children = comment.getChildren();
@@ -93,7 +79,7 @@ public class PostGUI {
         System.out.println("Done iterating over comments!");
     }
 
-    private Pane createCommentNode(Comment comment) {
+    private static Pane createCommentNode(Comment comment) {
         GridPane postPane = new GridPane();
         postPane.setPadding(new Insets(0, 5, 5, 5 + 50 * getParentCount(comment)));
         postPane.setMaxSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
@@ -114,7 +100,7 @@ public class PostGUI {
 
 
         Hyperlink username = new Hyperlink(comment.getUsername());
-        username.setOnAction(evt -> controller.requestUserPage("http://www.reddit.com/user/"+ comment.getUsername()));
+        username.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ comment.getUsername()));
         postPane.add(username, 2,0);
         ColumnConstraints col2 = new ColumnConstraints();
         col2.setMaxWidth(200);
@@ -152,7 +138,7 @@ public class PostGUI {
         return result;
     }
 
-    private ScrollPane buildComments(Post post) {
+    private static ScrollPane buildComments(Post post) {
         // Depth-first traversal of the comment tree.
 
         ArrayList<Node> renderList = new ArrayList<Node>();
@@ -180,12 +166,12 @@ public class PostGUI {
         return window;
     }
 
-    private Pane buildTitle(Post post) {
+    private static Pane buildTitle(Post post) {
         // Back button, subreddit text, postname by text, author hyperlink
         Button back = new Button();
-        Image backImage = new Image(getClass().getResourceAsStream("images/back.png"));
+        Image backImage = new Image(PostGUI.class.getResourceAsStream("images/back.png"));
         ImageView processedImage = new ImageView(backImage);
-        back.setOnAction(evt -> controller.requestBack());
+        back.setOnAction(evt -> RedditController.requestBack());
         processedImage.setFitHeight(75);
         processedImage.setFitWidth(75);
         back.setGraphic(processedImage);
@@ -198,7 +184,7 @@ public class PostGUI {
         postName.setWrappingWidth(SCENE_WIDTH / 3);
 
         Hyperlink author = new Hyperlink("by " + post.getUsername());
-        author.setOnAction(evt -> controller.requestUserPage("reddit.com/user/"+ post.getUsername()));
+        author.setOnAction(evt -> RedditController.requestUserPage("reddit.com/user/"+ post.getUsername()));
         author.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         author.setMaxWidth(200);
 
