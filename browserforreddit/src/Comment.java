@@ -33,6 +33,7 @@ public class Comment {
 		this.username = username;
 		this.content = content.replaceAll("\\<.*?>","");
 		this.content = this.content.replaceAll("&#39;","'");
+		this.content = this.content.replaceAll("&quot;","\"");
 		this.votes = votes;
 		this.children = new ArrayList<Comment>();
 	}
