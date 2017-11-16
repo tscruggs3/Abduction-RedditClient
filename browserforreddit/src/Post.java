@@ -14,7 +14,7 @@ public class Post {
 	private String content;
 	private Comment root;
 	private String votes;
-	private Subreddit subreddit;
+	private String subreddit;
 	private String contentURL;
 
 	/**
@@ -25,7 +25,7 @@ public class Post {
 	 * @param votes Current vote count
 	 * @param subreddit Associated subreddit
 	 */
-	public Post(String username, String title, String content, String votes, String contentURL, Subreddit subreddit, Comment root) {
+	public Post(String username, String title, String content, String votes, String contentURL, String subreddit, Comment root) {
 		this.username = username;
 		this.title = title;
 		this.content = content;
@@ -83,7 +83,7 @@ public class Post {
 	 * Returns the associated subreddit object
 	 * @return Subreddit
 	 */
-	public Subreddit getSubreddit() {
+	public String getSubreddit() {
 		return subreddit;
 	}
 }

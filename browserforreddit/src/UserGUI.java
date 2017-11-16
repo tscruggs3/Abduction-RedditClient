@@ -87,7 +87,7 @@ public class UserGUI implements SceneRender {
        GridPane nums = new GridPane();
        nums.setAlignment(Pos.CENTER);
       
-       Label num1 = new Label(Integer.toString(user.getPostKarma()));
+       Label num1 = new Label(user.getPostKarma());
        nums.add(num1,1,0);
       
        Label info1 = new Label("Post Karma: ");
@@ -99,7 +99,7 @@ public class UserGUI implements SceneRender {
        nums.add(info2,0,1);
        nums.setHalignment(info2, HPos.RIGHT);
 
-       Label num2 = new Label(Integer.toString(user.getLinkKarma()));
+       Label num2 = new Label(user.getLinkKarma());
        nums.add(num2,1,1);
       
        return nums;

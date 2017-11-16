@@ -72,13 +72,13 @@ public interface SceneRender {
         Text commentNumb = new Text(Integer.toString(commentNumber));
         commentPane.add(commentNumb, 0, 1);
 
-        Label voteCount = new Label(Integer.toString(commentPreview.getVote()));
+        Label voteCount = new Label(commentPreview.getVote());
         commentPane.add(voteCount, 1, 1);
         commentPane.setHalignment(voteCount, HPos.CENTER);
 
         Hyperlink commentContent = new Hyperlink(commentPreview.getTitle());
         commentContent.setMinWidth(MIN_TITLE_WIDTH/2);
-        commentContent.setOnAction(evt -> RedditController.requestPostPage(commentPreview.getURL()));
+        commentContent.setOnAction(evt -> RedditController.requestPostPage(commentPreview.getOriginalPostUrl()));
         commentPane.add(commentContent, 2, 1);
 
         return commentPane;

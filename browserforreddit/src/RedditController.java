@@ -42,7 +42,7 @@ public class RedditController extends Application {
 
     public static void requestUserPage(String url, String type) {
         System.out.println("Requested User at: " + url);
-        display(UserGUI.getScene(buildFakeUser(), type));
+        display(UserGUI.getScene(RedditScraper.scrapeUser(url), type));
     }
 
     public static void requestPostPage(String url) {
@@ -75,13 +75,13 @@ public class RedditController extends Application {
     }
 
     private static User buildFakeUser() {
-        User something =  new User("janedoe",122,33333);
+        User something =  new User("janedoe","122","33333");
         return something;
     }
 
     private static Post buildFakePost() {
         Subreddit dummy = new Subreddit("r/test");
-        Post demoPost = new Post("/u/janedoe","test post plz ignore", "thanks", "42", "", dummy, new Comment());
+        Post demoPost = new Post("/u/janedoe","test post plz ignore", "thanks", "42", "", "test", new Comment());
         Comment initial = new Comment(null, "/u/spez","lmao this is lit","99");
         Comment secondTopLevel = new Comment(null, "/u/nobody","why did u even post this", "-39");
         demoPost.getRoot().addChild(initial);

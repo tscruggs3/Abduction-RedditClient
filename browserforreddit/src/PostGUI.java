@@ -166,7 +166,7 @@ public class PostGUI implements SceneRender {
     private static Pane buildTitle(Post post) {
         Button back = SceneRender.buildBackButton();
 
-        Text subredditName = new Text(post.getSubreddit().getTitle()+"/ ");
+        Text subredditName = new Text(post.getSubreddit() +"/ ");
         subredditName.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, TITLE_SIZE));
 
         Text postName = new Text(post.getTitle());
