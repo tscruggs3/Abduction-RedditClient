@@ -18,27 +18,32 @@ public class UserGUI implements SceneRender {
 
    /**
     *Creates the scene for a UserGUI page. This scene displays all posts and comments for the user. 
-    *Also displays all relevant user information usch as CommentKarma, PostKarma, and links to all posts/comments
+    *Also displays all relevant user information usch as CommentKarma, PostKarma, and links to all posts/comments.
+    *The default view for a UserGUI is to display all posts by a given User.
     *@param user a User object that is fed into the method which then gets all relevant information for that given User
+    *@param type the type of data that will be displayed when the method is called. Either "Comments" or "Posts", defaults to Posts.
     *@return the GUI for a given User to display all posts/comments/information
     */
-    public static Scene getScene(User user) {
-      //adding dummy data to test out the design
-      //should not be present in finalized version
-        
+    public static Scene getScene(User user, String type) {
         BorderPane root = new BorderPane();
         root.setPrefSize(SCENE_WIDTH,SCENE_HEIGHT);
         VBox userInfo = createUserInfo(user);
-        //VBox postsPane = addPosts(user.getPosts());
-        VBox commentsPane = addComments(user.getComments());
         
+        if(type.equals("Comments"))
+         Vbox commentsPane = addComments(user.getComments());
+        else
+         VBox postsPane = addPosts(user.getPosts());
+       
         root.setTop(userInfo);
-        //root.setCenter(postsPane);
-        root.setCenter(commentsPane);
-   
+        if(type.equals("Comments"))
+         root.setCenter(commentsPane);
+        else
+         root.setCenter(postsPane);
+           
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         return scene;
     }
+    
 
    //Creates a VBox on the Top of the BorderPane with all info of the user
    //We can change the font/size/color of stuff if we want to later
@@ -57,7 +62,7 @@ public class UserGUI implements SceneRender {
         back.setGraphic(processedImage);
 
         Node numPane = addNums(user);
-        Node buttonPane = addButtons();
+        Node buttonPane = addButtons(user);
       
         info.setAlignment(Pos.CENTER);
       
@@ -66,16 +71,18 @@ public class UserGUI implements SceneRender {
     }
     
     //Adds the posts/comments buttons that switch the information shown below the topPane of BorderPane
-    private static Node addButtons(){
+    private static Node addButtons(User user){
       GridPane button = new GridPane();
       button.setAlignment(Pos.CENTER);
       
       Button posts = new Button("Posts");
       button.add(posts,0,0);
       button.setHalignment(posts, HPos.RIGHT);
+      posts.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ user.getUsername(), "Posts"));
       
       Button comments = new Button("Comments");
       button.add(comments,1,0);
+      comments.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ user.getUsername(), "Comments"));
       
       //TODO when pressing buttons switch the centerPane of the border pane to
       //the corresponding button. Maybe reset the page?
@@ -128,7 +135,4 @@ public class UserGUI implements SceneRender {
         }
         return commentVBox;
     }
-    
-
-
 }

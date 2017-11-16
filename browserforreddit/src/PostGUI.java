@@ -1,22 +1,20 @@
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.control.Button;
-import javafx.scene.image.*;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.web.WebView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +34,10 @@ public class PostGUI implements SceneRender {
     public static Scene getScene(Post post) {
         Pane page = new VBox();
         Pane title = buildTitle(post);
+
         System.out.println("Built title!");
         Node content = buildContent(post);
+
         ScrollPane comments = buildComments(post);
         System.out.println("Built comments!!");
 
@@ -177,11 +177,11 @@ public class PostGUI implements SceneRender {
         processedImage.setFitWidth(75);
         back.setGraphic(processedImage);
 
-        Text subredditName = new Text(post.getSubreddit().getTitle()+"/ ");
-        subredditName.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        String heading = post.getSubreddit().getTitle()+"/ ";
+        Text subredditName = SceneRender.buildHeader(heading, "Title");
 
-        Text postName = new Text(post.getTitle());
-        postName.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        String postText = post.getTitle();
+        Text postName = SceneRender.buildHeader(postText, "Post Title");
         postName.setWrappingWidth(SCENE_WIDTH / 3);
 
         Hyperlink author = new Hyperlink("by " + post.getUsername());
