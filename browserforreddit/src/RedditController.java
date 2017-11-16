@@ -19,7 +19,7 @@ public class RedditController extends Application {
     public void start(Stage primaryStage) throws Exception{
         mainStage = primaryStage;
         pages = new ArrayDeque<Scene>();
-        requestSubredditPage("http://www.reddit.com/r/showerthoughts"); // Initial Page
+        requestSubredditPage("http://www.reddit.com/r/highqualitygifs"); // Initial Page
         primaryStage.show();
     }
 
@@ -52,8 +52,13 @@ public class RedditController extends Application {
         display(PostGUI.getScene(postData));
     }
 
-    public static void requestContentPage(String url) {
-        // TODO: Implement this.
+    public static void requestContentPage(String url, String title) {
+        System.out.println("Requested Content at :" + url);
+        if (url.contains("reddit")) {
+            System.out.println("no content 4 u");
+        } else {
+            display(ContentGUI.getScene(url, title));
+        }
     }
 
     private static Scene getInitialScene() {
