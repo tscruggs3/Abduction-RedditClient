@@ -56,6 +56,9 @@ public class RedditController extends Application {
         System.out.println("Requested Content at :" + url);
         if (url.contains("reddit")) {
             System.out.println("no content 4 u");
+            if (url.contains("comments")) {
+                requestPostPage(url);
+            }
         } else {
             display(ContentGUI.getScene(url, title));
         }

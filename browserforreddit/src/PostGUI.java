@@ -37,10 +37,11 @@ public class PostGUI implements SceneRender {
         Pane page = new VBox();
         Pane title = buildTitle(post);
         System.out.println("Built title!");
+        Node content = buildContent(post);
         ScrollPane comments = buildComments(post);
         System.out.println("Built comments!!");
 
-        page.getChildren().addAll(title,comments);
+        page.getChildren().addAll(title,content,comments);
 
         Scene scene = new Scene(page, SCENE_WIDTH, SCENE_HEIGHT);
         System.out.println("Returning rendered scene!");
@@ -192,6 +193,11 @@ public class PostGUI implements SceneRender {
 
         title.setAlignment(Pos.CENTER_LEFT);
         return title;
+    }
+
+    private static Node buildContent(Post post) {
+        Text content = new Text(post.getContent());
+        return content;
     }
 
 }
