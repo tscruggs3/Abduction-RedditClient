@@ -29,7 +29,7 @@ public interface SceneRender {
 
         Hyperlink postContent = new Hyperlink(postPreview.getTitle());
         postContent.setMinWidth(MIN_TITLE_WIDTH);
-        postContent.setOnAction(evt -> RedditController.requestContentPage(postPreview.getContentURL()));
+        postContent.setOnAction(evt -> RedditController.requestContentPage(postPreview.getContentURL(), postPreview.getTitle()));
         postPane.add(postContent, 2, 1);
 
         String userEntry = "By " + postPreview.getUsername();
