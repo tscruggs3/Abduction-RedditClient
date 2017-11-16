@@ -13,9 +13,7 @@ public interface SceneRender {
     double SCENE_WIDTH = 1020;
     double SCENE_HEIGHT = 765;
     double MIN_TITLE_WIDTH = 250;
-    double TITLE_SIZE = 30;
-    double POST_TITLE_SIZE = 18;
-    double USERNAME_SIZE = 60;
+
 
     static Node buildPostPreview(int postNumber, PostPreview postPreview) {
         GridPane postPane = new GridPane();
