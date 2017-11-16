@@ -1,6 +1,7 @@
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
@@ -29,12 +30,22 @@ public class SubredditGUI implements SceneRender {
      * @param subreddit is a Subreddit object.
      * @return a scene given the subreddit.
      */
-    public static Scene getScene(Subreddit subreddit){
+    public static Scene getScene(Subreddit subreddit, int position){
 
         HBox subredditTitle = addSubredditTitle(subreddit.getTitle());
         HBox menuPane = addMenus();
         VBox postsPane = addPosts(subreddit.getPostList());
         Text copyrightInfo = new Text("Reddit is a registered trademark of Reddit Inc.");
+        Button nextPage = new Button("Next Page");
+        nextPage.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/"+subreddit.getTitle(),position + 25));
+        Button previousPage = new Button("Previous Page");
+        if (position > 25) {
+            previousPage.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/" + subreddit.getTitle(), position - 25));
+        }
+        HBox bottomMenu = new HBox(previousPage, nextPage);
+        bottomMenu.setSpacing(10);
+        bottomMenu.setAlignment(Pos.CENTER);
+        postsPane.getChildren().add(bottomMenu);
 
         ScrollPane postScroller = new ScrollPane(postsPane);
         postScroller.setFitToWidth(true);
@@ -67,7 +78,7 @@ public class SubredditGUI implements SceneRender {
 
         Menu refreshMenu = new Menu("Refresh");
 
-        /* TODO: Code to fresh to the page when clicked
+        /* TODO: Code to refresh to the page when clicked
 
         refreshMenuITEM.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -78,18 +89,8 @@ public class SubredditGUI implements SceneRender {
         });
         */
 
-        Menu sortMenu = new Menu("Sort by Popular V");
-
-        /* TODO: Code sort by popular when clicked
-        sortMenuITEM.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                //call sort method
-            }
-        });
-         */
-
         Menu randomMenu = new Menu("Random");
+        randomMenu.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/random",0));
 
         /* TODO: Take the user to a random post when clicked
 
@@ -101,9 +102,9 @@ public class SubredditGUI implements SceneRender {
         });
         */
 
+        Menu newSub = new Menu("Find Subreddit");
 
-
-        menuBar.getMenus().addAll(refreshMenu, sortMenu, randomMenu);
+        menuBar.getMenus().addAll(refreshMenu, randomMenu, newSub);
         pane.getChildren().add(menuBar);
 
         return pane;

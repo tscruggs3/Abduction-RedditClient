@@ -19,7 +19,7 @@ public class RedditController extends Application {
     public void start(Stage primaryStage) throws Exception{
         mainStage = primaryStage;
         pages = new ArrayDeque<Scene>();
-        requestSubredditPage("http://www.reddit.com/r/highqualitygifs"); // Initial Page
+        requestSubredditPage("http://www.reddit.com/r/highqualitygifs",0); // Initial Page
         primaryStage.show();
     }
 
@@ -35,9 +35,9 @@ public class RedditController extends Application {
      * @param url the url of the reddit page to scrape
      */
 
-    public static void requestSubredditPage(String url) {
+    public static void requestSubredditPage(String url, int position) {
         System.out.println("Requested Subreddit at: " + url);
-        display(SubredditGUI.getScene(RedditScraper.scrapeSubreddit(url)));
+        display(SubredditGUI.getScene(RedditScraper.scrapeSubreddit(url + "/?count=" + position), position));
     }
 
     public static void requestUserPage(String url, String type) {
@@ -71,7 +71,7 @@ public class RedditController extends Application {
         dummy.addPostPreview(post1);
         dummy.addPostPreview(post2);
 
-        return SubredditGUI.getScene(dummy);
+        return SubredditGUI.getScene(dummy,0);
     }
 
     private static User buildFakeUser() {
