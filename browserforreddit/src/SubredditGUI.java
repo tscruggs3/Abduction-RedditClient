@@ -51,7 +51,7 @@ public class SubredditGUI implements SceneRender {
         titlePane.setAlignment(Pos.TOP_LEFT);
 
         Text heading = new Text(title);
-        heading.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, TITLE_SIZE));
+        heading.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, TITLE_SIZE));
         titlePane.getChildren().add(heading);
 
         return titlePane;

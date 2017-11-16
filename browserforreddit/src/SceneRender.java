@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public interface SceneRender {
@@ -17,7 +19,8 @@ public interface SceneRender {
     double TITLE_SIZE = 30;
     double POST_TITLE_SIZE = 18;
     double USERNAME_SIZE = 60;
-    String FONT_TYPE = "Verdana";
+    String FONT_TYPE_TITLE = "Comic Sans MS";
+    String FONT_TYPE_CONTENT = "Verdana";
 
 
     static Node buildPostPreview(int postNumber, PostPreview postPreview) {
@@ -28,24 +31,29 @@ public interface SceneRender {
         postPane.setHgap(5);
 
         Text postNumb = new Text(Integer.toString(postNumber));
+        postNumb.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
         postPane.add(postNumb, 0, 1);
 
         Text voteCount = new Text("         " + postPreview.getVote());
+        voteCount.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
         postPane.add(voteCount, 1, 1);
 
         Hyperlink postContent = new Hyperlink(postPreview.getTitle());
         postContent.setMinWidth(MIN_TITLE_WIDTH);
+        postContent.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
         postContent.setOnAction(evt -> RedditController.requestContentPage(postPreview.getContentURL(), postPreview.getTitle()));
         postPane.add(postContent, 2, 1);
 
         String userEntry = "By " + postPreview.getUsername();
         Hyperlink username = new Hyperlink(userEntry);
         username.setMinWidth(MIN_TITLE_WIDTH);
+        username.setFont(Font.font(FONT_TYPE_CONTENT, POST_TITLE_SIZE/(1.2)));
         username.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ postPreview.getUsername(),"posts"));
         postPane.add(username, 3, 1);
 
         Hyperlink comments = new Hyperlink(postPreview.getNumComments());
         comments.setMinWidth(30);
+        comments.setFont(Font.font(FONT_TYPE_CONTENT, POST_TITLE_SIZE/(1.5)));
         comments.setOnAction(evt -> RedditController.requestPostPage(postPreview.getCommentURL()));
         postPane.add(comments, 2, 2);
 

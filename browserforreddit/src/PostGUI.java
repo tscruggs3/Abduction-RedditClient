@@ -33,16 +33,13 @@ public class PostGUI implements SceneRender {
         Pane page = new VBox();
         Pane title = buildTitle(post);
 
-        System.out.println("Built title!");
         Node content = buildContent(post);
 
         ScrollPane comments = buildComments(post);
-        System.out.println("Built comments!!");
 
         page.getChildren().addAll(title,content,comments);
 
         Scene scene = new Scene(page, SCENE_WIDTH, SCENE_HEIGHT);
-        System.out.println("Returning rendered scene!");
         return scene;
     }
 
@@ -75,7 +72,6 @@ public class PostGUI implements SceneRender {
             System.out.println(child.getUsername() + " " + child.getVotes());
 
         }
-        System.out.println("Done iterating over comments!");
     }
 
     private static Pane createCommentNode(Comment comment) {
@@ -85,6 +81,7 @@ public class PostGUI implements SceneRender {
 
         Text voteCount = new Text(comment.getVotes());
         voteCount.setTextAlignment(TextAlignment.CENTER);
+        voteCount.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
         postPane.add(voteCount, 0,0);
         ColumnConstraints col0 = new ColumnConstraints();
         col0.setMaxWidth(30);
@@ -99,6 +96,7 @@ public class PostGUI implements SceneRender {
 
 
         Hyperlink username = new Hyperlink(comment.getUsername());
+        username.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
         username.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ comment.getUsername(), "posts"));
         postPane.add(username, 2,0);
         ColumnConstraints col2 = new ColumnConstraints();
@@ -169,14 +167,14 @@ public class PostGUI implements SceneRender {
         Button back = SceneRender.buildBackButton();
 
         Text subredditName = new Text(post.getSubreddit().getTitle()+"/ ");
-        subredditName.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, TITLE_SIZE));
+        subredditName.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, TITLE_SIZE));
 
         Text postName = new Text(post.getTitle());
-        postName.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, POST_TITLE_SIZE));
+        postName.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, POST_TITLE_SIZE));
         postName.setWrappingWidth(SCENE_WIDTH / 3);
 
         Hyperlink author = new Hyperlink("by " + post.getUsername());
-        author.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, POST_TITLE_SIZE));
+        author.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, POST_TITLE_SIZE));
         author.setOnAction(evt -> RedditController.requestUserPage("reddit.com/user/"+ post.getUsername(),"posts"));
         author.setMaxWidth(200);
 

@@ -48,7 +48,7 @@ public class UserGUI implements SceneRender {
         VBox info = new VBox(15);
 
         Label username  = new Label("/u/" + user.getUsername());
-        username.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, USERNAME_SIZE));
+        username.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, USERNAME_SIZE));
 
         Button back = SceneRender.buildBackButton();
 
