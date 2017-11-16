@@ -7,6 +7,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.List;
@@ -48,7 +50,8 @@ public class SubredditGUI implements SceneRender {
         HBox titlePane = new HBox();
         titlePane.setAlignment(Pos.TOP_LEFT);
 
-        Text heading = SceneRender.buildHeader(title, "Title");
+        Text heading = new Text(title);
+        heading.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, TITLE_SIZE));
         titlePane.getChildren().add(heading);
 
         return titlePane;

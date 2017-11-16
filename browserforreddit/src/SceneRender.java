@@ -4,8 +4,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public interface SceneRender {
@@ -13,6 +11,10 @@ public interface SceneRender {
     double SCENE_WIDTH = 1020;
     double SCENE_HEIGHT = 765;
     double MIN_TITLE_WIDTH = 250;
+    double TITLE_SIZE = 30;
+    double POST_TITLE_SIZE = 18;
+    double USERNAME_SIZE = 18;
+    String FONT_TYPE = "Verdana";
 
 
     static Node buildPostPreview(int postNumber, PostPreview postPreview) {
@@ -36,7 +38,7 @@ public interface SceneRender {
         String userEntry = "By " + postPreview.getUsername();
         Hyperlink username = new Hyperlink(userEntry);
         username.setMinWidth(MIN_TITLE_WIDTH);
-        username.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ postPreview.getUsername()));
+        username.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ postPreview.getUsername(),"posts"));
         postPane.add(username, 3, 1);
 
         Hyperlink comments = new Hyperlink(postPreview.getNumComments());
@@ -71,25 +73,6 @@ public interface SceneRender {
         return commentPane;
     }
 
-    static Text buildHeader(String header, String size) {
-        int titleSize = 30;
-        int postTitleSize = 18;
-        int usernameSize = 60;
 
-        int headerSize = 20;
-        if (size.equals("Title")){
-            headerSize = titleSize;
-        }
-        else if (size.equals("Post Title")){
-            headerSize = postTitleSize;
-        }
-        else if (size.equals("Username Title")){
-            headerSize = usernameSize;
-        }
-
-        Text heading = new Text(header);
-        heading.setFont(Font.font("Verdana", FontWeight.BOLD, headerSize));
-        return heading;
-    }
 
 }

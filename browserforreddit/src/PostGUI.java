@@ -10,6 +10,8 @@ import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -99,7 +101,7 @@ public class PostGUI implements SceneRender {
 
 
         Hyperlink username = new Hyperlink(comment.getUsername());
-        username.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ comment.getUsername()));
+        username.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ comment.getUsername(), "posts"));
         postPane.add(username, 2,0);
         ColumnConstraints col2 = new ColumnConstraints();
         col2.setMaxWidth(200);
@@ -175,16 +177,18 @@ public class PostGUI implements SceneRender {
         processedImage.setFitWidth(75);
         back.setGraphic(processedImage);
 
-        String heading = post.getSubreddit().getTitle()+"/ ";
-        Text subredditName = (Text) SceneRender.buildHeader(heading, "Title");
+        Text subredditName = new Text(post.getSubreddit().getTitle()+"/ ");
+        subredditName.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, TITLE_SIZE));
 
         String postText = post.getTitle();
-        Text postName = (Text) SceneRender.buildHeader(postText, "Post Title");
+        Text postName = new Text(postText);
+        postName.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, POST_TITLE_SIZE));
         postName.setWrappingWidth(SCENE_WIDTH / 3);
 
         String authorText = "by " + post.getUsername();
-        Hyperlink author = (Hyperlink) SceneRender.buildHeader(authorText, "Post Title");
-        author.setOnAction(evt -> RedditController.requestUserPage("reddit.com/user/"+ post.getUsername()));
+        Hyperlink author = new Hyperlink(authorText);
+        author.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, POST_TITLE_SIZE));
+        author.setOnAction(evt -> RedditController.requestUserPage("reddit.com/user/"+ post.getUsername(),"posts"));
         author.setMaxWidth(200);
 
         HBox title = new HBox(back, subredditName,postName,author);
