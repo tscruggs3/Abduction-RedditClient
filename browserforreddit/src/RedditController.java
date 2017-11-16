@@ -40,9 +40,9 @@ public class RedditController extends Application {
         display(SubredditGUI.getScene(RedditScraper.scrapeSubreddit(url)));
     }
 
-    public static void requestUserPage(String url) {
+    public static void requestUserPage(String url, String type) {
         System.out.println("Requested User at: " + url);
-        display(UserGUI.getScene(buildFakeUser()));
+        display(UserGUI.getScene(buildFakeUser(), type));
     }
 
     public static void requestPostPage(String url) {

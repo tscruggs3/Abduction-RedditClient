@@ -28,17 +28,16 @@ public class UserGUI implements SceneRender {
         BorderPane root = new BorderPane();
         root.setPrefSize(SCENE_WIDTH,SCENE_HEIGHT);
         VBox userInfo = createUserInfo(user);
-        
-        if(type.equals("Comments"))
-         Vbox commentsPane = addComments(user.getComments());
-        else
-         VBox postsPane = addPosts(user.getPosts());
+        Node centralPane;
+
+        if(type.equals("Comments")) {
+            centralPane = addComments(user.getComments());
+        } else {
+            centralPane = addPosts(user.getPosts());
+        }
        
         root.setTop(userInfo);
-        if(type.equals("Comments"))
-         root.setCenter(commentsPane);
-        else
-         root.setCenter(postsPane);
+        root.setCenter(centralPane);
            
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         return scene;
