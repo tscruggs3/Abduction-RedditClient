@@ -10,8 +10,6 @@ import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -178,15 +176,15 @@ public class PostGUI implements SceneRender {
         back.setGraphic(processedImage);
 
         String heading = post.getSubreddit().getTitle()+"/ ";
-        Text subredditName = SceneRender.buildHeader(heading, "Title");
+        Text subredditName = (Text) SceneRender.buildHeader(heading, "Title");
 
         String postText = post.getTitle();
-        Text postName = SceneRender.buildHeader(postText, "Post Title");
+        Text postName = (Text) SceneRender.buildHeader(postText, "Post Title");
         postName.setWrappingWidth(SCENE_WIDTH / 3);
 
-        Hyperlink author = new Hyperlink("by " + post.getUsername());
+        String authorText = "by " + post.getUsername();
+        Hyperlink author = (Hyperlink) SceneRender.buildHeader(authorText, "Post Title");
         author.setOnAction(evt -> RedditController.requestUserPage("reddit.com/user/"+ post.getUsername()));
-        author.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         author.setMaxWidth(200);
 
         HBox title = new HBox(back, subredditName,postName,author);
