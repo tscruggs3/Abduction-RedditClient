@@ -1,17 +1,15 @@
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.control.Label;
+
 import java.util.List;
 
 public class UserGUI implements SceneRender {
@@ -50,15 +48,9 @@ public class UserGUI implements SceneRender {
         VBox info = new VBox(15);
 
         Label username  = new Label("/u/" + user.getUsername());
-        username.setFont(Font.font("Verdana", FontWeight.BOLD, 60));
+        username.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, USERNAME_SIZE));
 
-        Button back = new Button();
-        Image backImage = new Image(UserGUI.class.getResourceAsStream("images/back.png"));
-        ImageView processedImage = new ImageView(backImage);
-        back.setOnAction(evt -> RedditController.requestBack());
-        processedImage.setFitHeight(75);
-        processedImage.setFitWidth(75);
-        back.setGraphic(processedImage);
+        Button back = SceneRender.buildBackButton();
 
         Node numPane = addNums(user);
         Node buttonPane = addButtons(user);

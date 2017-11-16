@@ -7,8 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -168,25 +166,16 @@ public class PostGUI implements SceneRender {
     }
 
     private static Pane buildTitle(Post post) {
-        // Back button, subreddit text, postname by text, author hyperlink
-        Button back = new Button();
-        Image backImage = new Image(PostGUI.class.getResourceAsStream("images/back.png"));
-        ImageView processedImage = new ImageView(backImage);
-        back.setOnAction(evt -> RedditController.requestBack());
-        processedImage.setFitHeight(75);
-        processedImage.setFitWidth(75);
-        back.setGraphic(processedImage);
+        Button back = SceneRender.buildBackButton();
 
         Text subredditName = new Text(post.getSubreddit().getTitle()+"/ ");
         subredditName.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, TITLE_SIZE));
 
-        String postText = post.getTitle();
-        Text postName = new Text(postText);
+        Text postName = new Text(post.getTitle());
         postName.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, POST_TITLE_SIZE));
         postName.setWrappingWidth(SCENE_WIDTH / 3);
 
-        String authorText = "by " + post.getUsername();
-        Hyperlink author = new Hyperlink(authorText);
+        Hyperlink author = new Hyperlink("by " + post.getUsername());
         author.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, POST_TITLE_SIZE));
         author.setOnAction(evt -> RedditController.requestUserPage("reddit.com/user/"+ post.getUsername(),"posts"));
         author.setMaxWidth(200);
