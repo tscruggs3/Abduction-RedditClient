@@ -7,44 +7,68 @@
 
 public class CommentPreview {
 
-	private String title;
-	private String URL;
-	private int vote;
-
 	/**
 	 * Constructor
 	 * @param title String title of the object
-	 * @param URL String URL of the associated comment
-	 * @param vote Current vote count of the comment
+	 * @param originalPostUrl URL of the original post link
+	 * @param fullCommentsUrl URL of the original comment thread
+	 * @param subreddit the subreddit the comment was posted to
+	 * @param postdate How recently the comment was posted
+	 * @param comment The content of the comment
+	 * @param vote The upvote/downvote count of the comment
 	 */
-	public CommentPreview(String title, String URL, int vote) {
+
+	public CommentPreview(String title, String originalPostUrl, String fullCommentsUrl, String subreddit, String postdate, String comment, String vote) {
 		this.title = title;
-		this.URL = URL;
+		this.originalPostUrl = originalPostUrl;
+		this.fullCommentsUrl = fullCommentsUrl;
+		this.subreddit = subreddit;
+		this.postdate = postdate;
+		this.comment = comment;
 		this.vote = vote;
 	}
 
-	/**
-	 * Returns the title of comment
-	 * @return Title
-	 */
+
+
+	private String title;
+	private String originalPostUrl;
+	private String fullCommentsUrl;
+	private String subreddit;
+	private String postdate;
+	private String comment;
+	private String vote;
+
+
+
+
+
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 
-	/**
-	 * Returns the URL of the comment
-	 * @return URL
-	 */
-	public String getURL() {
-		return this.URL;
+	public String getOriginalPostUrl() {
+		return originalPostUrl;
 	}
 
-	/**
-	 * Returns the current vote count of the comment
-	 * @return Vote count
-	 */
-	public int getVote() {
-		return this.vote;
+	public String getFullCommentsUrl() {
+		return fullCommentsUrl;
 	}
+
+	public String getSubreddit() {
+		return subreddit;
+	}
+
+	public String getPostdate() {
+		return postdate;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public String getVote() {
+		return vote;
+	}
+
 
 }

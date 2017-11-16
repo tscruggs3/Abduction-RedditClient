@@ -12,8 +12,8 @@ public class User {
 	private String username;
 	private List<PostPreview> postList;
 	private List<CommentPreview> commentList;
-	private int postKarma;
-	private int linkKarma;
+	private String postKarma;
+	private String linkKarma;
 
 	/**
 	 * Constructor
@@ -21,7 +21,7 @@ public class User {
 	 * @param postKarma User's Post Karma
 	 * @param linkKarma User's Link Karma
 	 */
-	public User(String username, int postKarma, int linkKarma) {
+	public User(String username, String postKarma, String linkKarma) {
 		this.username = username;
 		this.postKarma = postKarma;
 		this.linkKarma = linkKarma;
@@ -73,7 +73,7 @@ public class User {
 	 * Returns the post karma of the user
 	 * @return Post Karma
 	 */
-	public int getPostKarma() {
+	public String getPostKarma() {
 		return postKarma;
 	}
 
@@ -81,7 +81,7 @@ public class User {
 	 * Returns the link karma of the user
 	 * @return Link Karma
 	 */
-	public int getLinkKarma() {
+	public String getLinkKarma() {
 		return linkKarma;
 	}
 

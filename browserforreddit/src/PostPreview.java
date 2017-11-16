@@ -21,6 +21,7 @@ public class PostPreview {
 	 * @param username The username of the submitting user
 	 * @param title The title of the post
 	 * @param vote The current vote count of the post
+	 * @param numComments the Number of comments on the post
 	 */
 	public PostPreview(String contentURL, String commentURL, String username, String title, String vote, String numComments) {
 		this.contentURL = contentURL;
