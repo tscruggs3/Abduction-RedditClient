@@ -7,9 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
 
 public interface SceneRender {
 
@@ -41,6 +43,7 @@ public interface SceneRender {
         Hyperlink postContent = new Hyperlink(postPreview.getTitle());
         postContent.setMinWidth(MIN_TITLE_WIDTH);
         postContent.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
+        postContent.setTextFill(Color.DARKGOLDENROD);
         postContent.setOnAction(evt -> RedditController.requestContentPage(postPreview.getContentURL(), postPreview.getTitle()));
         postPane.add(postContent, 2, 1);
 
@@ -48,6 +51,7 @@ public interface SceneRender {
         Hyperlink username = new Hyperlink(userEntry);
         username.setMinWidth(MIN_TITLE_WIDTH);
         username.setFont(Font.font(FONT_TYPE_CONTENT, POST_TITLE_SIZE/(1.2)));
+        username.setTextFill(Color.DARKRED);
         username.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ postPreview.getUsername(),"posts"));
         postPane.add(username, 3, 1);
 
