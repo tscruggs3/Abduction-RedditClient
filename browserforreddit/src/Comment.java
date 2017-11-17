@@ -12,12 +12,13 @@ public class Comment {
 	private String username;
 	private String content;
 	private String votes;
+	private Boolean rootStatus = false;
 
 	/**
 	 * Default constructor for null, root comment
 	 */
 	public Comment() {
-		parent = null;
+		rootStatus = true;
 		this.children = new ArrayList<Comment>();
 	}
 
@@ -36,6 +37,10 @@ public class Comment {
 		this.content = this.content.replaceAll("&quot;","\"");
 		this.votes = votes;
 		this.children = new ArrayList<Comment>();
+	}
+
+	public Boolean isRoot() {
+		return this.rootStatus;
 	}
 
 	/**

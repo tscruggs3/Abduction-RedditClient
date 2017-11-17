@@ -1,3 +1,4 @@
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -12,7 +13,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +59,9 @@ public class PostGUI implements SceneRender {
     private static int getParentCount(Comment comment) {
         int count = 0;
         Comment current = comment;
-        while (current.getParent() != null) {
-            current = comment.getParent();
+        while (current.isRoot() == false) {
+            current = current.getParent();
+            //System.out.println(comment);
             count += 1;
         }
         return count;
@@ -95,9 +96,10 @@ public class PostGUI implements SceneRender {
         voteCount.setTextAlignment(TextAlignment.CENTER);
         voteCount.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
         postPane.add(voteCount, 0,0);
+        postPane.setHalignment(voteCount, HPos.RIGHT);
         ColumnConstraints col0 = new ColumnConstraints();
-        col0.setMaxWidth(30);
-        col0.setMinWidth(30);
+        col0.setMaxWidth(60);
+        col0.setMinWidth(60);
 
         Separator separateVotesAndUser = new Separator();
         separateVotesAndUser.setOrientation(Orientation.VERTICAL);
@@ -105,7 +107,6 @@ public class PostGUI implements SceneRender {
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setMaxWidth(5);
         col1.setMinWidth(5);
-
 
         Hyperlink username = new Hyperlink(comment.getUsername());
         username.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
@@ -127,25 +128,9 @@ public class PostGUI implements SceneRender {
         content.setWrappingWidth(SCENE_WIDTH/3);
         postPane.add(content, 2,1);
 
-        /*
-        Rectangle outline = new Rectangle();
-        outline.setX(50 * getParentCount(comment));
-        outline.setY(0);
-        outline.setHeight(postPane.getPrefHeight());
-        outline.setWidth(SCENE_WIDTH / 2);
-        outline.setFill(null);
-        outline.setStroke(Color.BLACK);
-        outline.setStrokeWidth(2);
-        outline.setArcHeight(20);
-        outline.setArcWidth(20);
-        */
-
         postPane.getColumnConstraints().addAll(col0,col1,col2,col3);
 
-        StackPane result = new StackPane(postPane);
-        result.setAlignment(Pos.CENTER_LEFT);
-
-        return result;
+        return postPane;
     }
 
     private static ScrollPane buildComments(Post post) {
@@ -153,15 +138,11 @@ public class PostGUI implements SceneRender {
 
         ArrayList<Node> renderList = new ArrayList<Node>();
 
-        /*
         List<Comment> commentList = post.getRoot().getChildren();
-        System.out.println("Top Level Comments: " + commentList.size());
         for (int i = 0; i < commentList.size(); i++) {
             recursiveIndex(commentList.get(i), renderList);
             System.out.println("Iterated " + i + "Times");
         }
-        */
-        addTopLevel(post.getRoot(), renderList);
 
         VBox comments = new VBox();
         List children = comments.getChildren();
@@ -192,6 +173,7 @@ public class PostGUI implements SceneRender {
         author.setMaxWidth(200);
 
         HBox title = new HBox(back, subredditName,postName,author);
+        title.setSpacing(20);
 
         title.setAlignment(Pos.CENTER_LEFT);
 
@@ -200,6 +182,7 @@ public class PostGUI implements SceneRender {
     }
 
     private static Node buildContent(Post post) {
+        System.out.println(post.getContent());
         Text content = new Text(post.getContent());
         return content;
     }
