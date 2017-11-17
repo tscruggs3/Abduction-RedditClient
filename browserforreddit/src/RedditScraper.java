@@ -12,7 +12,8 @@ public class RedditScraper {
     public static void main(String[]args){
         RedditScraper user = new RedditScraper();
         //user.subReddit("http://www.reddit.com/r/random");
-        user.scrapePost("https://www.reddit.com/r/politics/comments/7cqez8/the_secret_correspondence_between_donald_trump_jr/");
+        //user.scrapePost("https://www.reddit.com/r/politics/comments/7cqez8/the_secret_correspondence_between_donald_trump_jr/");
+        User temp = RedditScraper.scrapeUser("http://www.reddit.com/user/libbyliblib");
     }
 
    public static User scrapeUser(String url){
@@ -24,16 +25,19 @@ public class RedditScraper {
         }
         Element userDocument = user.doc;
         String username = getUsername(url);
+        System.out.println(username);
         String postKarma = getPostKarma(userDocument);
+        System.out.println(postKarma);
         String linkKarma = getLinkKarma(userDocument);
+        System.out.println(linkKarma);
         User scrapedUser = new User(username, postKarma, linkKarma);
         getPostsAndComments(scrapedUser, userDocument);
         return scrapedUser;
    }
    private static void getPostsAndComments(User user, Element document){
-
+        //System.out.println(document.innerHTML());
        try{
-           document = document.findFirst("div id=siteTable>");
+           document = document.findFirst("<div class='sitetable linklisting'>");
        }catch(NotFound e){
            System.out.println("could not scrape user posts");
            return;
@@ -117,10 +121,11 @@ public class RedditScraper {
     }
   */
    private static String getUsername(String link){
-       return link.substring(link.lastIndexOf("user/") + 1);
+       return link.substring(link.lastIndexOf("user/") + 5);
    }
 
    private static String getPostKarma(Element userDocument){
+       System.out.println(userDocument.innerHTML());
        String returnValue;
        try{
            returnValue = userDocument.findFirst("<span class='karma'>").getText();
@@ -132,6 +137,7 @@ public class RedditScraper {
 
     private static String getLinkKarma(Element userDocument){
         String returnValue;
+        System.out.println(userDocument.getText());
         try{
             returnValue = userDocument.findFirst("<span class='karma comment-karma'>").getText();
         }catch(NotFound e){
