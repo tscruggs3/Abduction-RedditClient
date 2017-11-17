@@ -30,14 +30,14 @@ public class SubredditGUI implements SceneRender {
      * @param subreddit is a Subreddit object.
      * @return a scene given the subreddit.
      */
-    public static Scene getScene(Subreddit subreddit, int position){
+    public static Scene getScene(Subreddit subreddit){
 
         HBox subredditTitle = addSubredditTitle(subreddit.getTitle());
         HBox menuPane = addMenus();
         VBox postsPane = addPosts(subreddit.getPostList());
         Text copyrightInfo = new Text("Reddit is a registered trademark of Reddit Inc.");
         Button nextPage = new Button("Next Page");
-        nextPage.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/"+subreddit.getTitle(),position + 25));
+        nextPage.setOnAction(evt -> RedditController.requestSubredditPage(subreddit.getNextPageURL()));
         Button previousPage = new Button("Previous Page");
         previousPage.setOnAction(evt -> RedditController.requestBack());
         HBox bottomMenu = new HBox(previousPage, nextPage);
@@ -88,7 +88,7 @@ public class SubredditGUI implements SceneRender {
         */
 
         Menu randomMenu = new Menu("Random");
-        randomMenu.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/random",0));
+        randomMenu.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/random"));
 
         /* TODO: Take the user to a random post when clicked
 

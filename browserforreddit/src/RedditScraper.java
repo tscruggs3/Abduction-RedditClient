@@ -274,20 +274,20 @@ public class RedditScraper {
             System.err.println(e);
             return null;
         }
-        String title;
+        String title = url.split("/")[4];
+        String nextURL;
         try {
-            title = user.doc.findFirst("<title>").getText();
-        } catch (NotFound e){
-            title = "reddit";
+            nextURL = user.doc.findFirst("<span class = next-button>").findFirst("<a>").getAt("href");
+        } catch (NotFound e) {
+            nextURL = url;
         }
-
         List<String> titles = getPostTitles(user);
         List<String> postLinks = getPostLinks(user);
         List<String> usernames = getUsers(user);
         List<String> numUpvotes = getNumUpvotes(user);
         List<String> linksToComments = getLinksToComments(user);
         List<String> numComments = getNumComments(user);
-        Subreddit subreddit = new Subreddit(title);
+        Subreddit subreddit = new Subreddit(title, nextURL);
         for(int i = 0; i < postLinks.size(); i++){
             PostPreview post = new PostPreview(postLinks.get(i), linksToComments.get(i), usernames.get(i),
                         titles.get(i), numUpvotes.get(i), numComments.get(i));

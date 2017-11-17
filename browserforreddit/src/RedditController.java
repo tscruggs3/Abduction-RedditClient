@@ -1,8 +1,10 @@
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 public class RedditController extends Application {
 
@@ -19,7 +21,7 @@ public class RedditController extends Application {
     public void start(Stage primaryStage) throws Exception{
         mainStage = primaryStage;
         pages = new ArrayDeque<Scene>();
-        requestSubredditPage("http://www.reddit.com/r/highqualitygifs",0); // Initial Page
+        requestSubredditPage("http://www.reddit.com/r/programmerhumor"); // Initial Page
         primaryStage.show();
     }
 
@@ -35,9 +37,9 @@ public class RedditController extends Application {
      * @param url the url of the reddit page to scrape
      */
 
-    public static void requestSubredditPage(String url, int position) {
+    public static void requestSubredditPage(String url) {
         System.out.println("Requested Subreddit at: " + url);
-        display(SubredditGUI.getScene(RedditScraper.scrapeSubreddit(url + "/?count=" + position), position));
+        display(SubredditGUI.getScene(RedditScraper.scrapeSubreddit(url)));
     }
 
     public static void requestUserPage(String url, String type) {
@@ -65,13 +67,13 @@ public class RedditController extends Application {
     }
 
     private static Scene getInitialScene() {
-        Subreddit dummy = new Subreddit("r/test");
+        Subreddit dummy = new Subreddit("test","test");
         PostPreview post1 = new PostPreview("post1", "post1","janedoe","test post plz ignore","99191","32");
         PostPreview post2 = new PostPreview("post1", "post1","janedoe","give me karma","-32000","32");
         dummy.addPostPreview(post1);
         dummy.addPostPreview(post2);
 
-        return SubredditGUI.getScene(dummy,0);
+        return SubredditGUI.getScene(dummy);
     }
 
     private static User buildFakeUser() {
@@ -80,7 +82,7 @@ public class RedditController extends Application {
     }
 
     private static Post buildFakePost() {
-        Subreddit dummy = new Subreddit("r/test");
+        Subreddit dummy = new Subreddit("r/test","test");
         Post demoPost = new Post("/u/janedoe","test post plz ignore", "thanks", "42", "", "test", new Comment());
         Comment initial = new Comment(null, "/u/spez","lmao this is lit","99");
         Comment secondTopLevel = new Comment(null, "/u/nobody","why did u even post this", "-39");
@@ -97,12 +99,18 @@ public class RedditController extends Application {
         mainStage.setScene(pages.peek());;
     }
 
+    /*
+    TODO: Detect if a scene has a webview, find it's WebEngine and have it load null if so
+    webView.getEngine().load(null);
+    Otherwise, the webview will play youtube videos on loop in the background.
+     */
     private static void backButton() {
         if(pages.size() > 1) {
             pages.pop();
         }
         mainStage.setScene(pages.peek());;
     }
+
 
     public static void main(String[] args) {
         launch(args);
