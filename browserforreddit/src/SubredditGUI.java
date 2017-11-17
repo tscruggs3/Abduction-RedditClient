@@ -39,9 +39,7 @@ public class SubredditGUI implements SceneRender {
         Button nextPage = new Button("Next Page");
         nextPage.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/"+subreddit.getTitle(),position + 25));
         Button previousPage = new Button("Previous Page");
-        if (position > 25) {
-            previousPage.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/" + subreddit.getTitle(), position - 25));
-        }
+        previousPage.setOnAction(evt -> RedditController.requestBack());
         HBox bottomMenu = new HBox(previousPage, nextPage);
         bottomMenu.setSpacing(10);
         bottomMenu.setAlignment(Pos.CENTER);
