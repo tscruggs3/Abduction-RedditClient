@@ -1,10 +1,7 @@
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -70,24 +67,25 @@ public class SubredditGUI implements SceneRender {
     private static HBox addMenus(Subreddit subreddit) {
         HBox pane = new HBox();
         pane.setAlignment(Pos.TOP_LEFT);
+        pane.setMinWidth(SCENE_WIDTH);
 
-        MenuBar menuBar = new MenuBar();
-        menuBar.setMinWidth(SCENE_WIDTH);
+        Button back = new Button("Back");
+        back.setOnAction(evt -> RedditController.requestBack());
 
-        Menu refreshMenu = new Menu("Refresh");
-        refreshMenu.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/"+ subreddit.getTitle()));
+        Button refresh = new Button("Refresh");
+        //refresh.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/programmerhumor"));
+        refresh.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/"+ subreddit.getTitle()));
 
-        Menu randomMenu = new Menu("Random");
-        randomMenu.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/random"));
+        Button random = new Button("Random");
+        random.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/random"));
 
         /* TODO: Currently only brings User to a random subreddit but im not sure if you want
              it to take to a random post on that random subreddit or if this is fine.
         */
 
-        Menu newSub = new Menu("Find Subreddit");
+        Button newSub = new Button("Find Subreddit");
 
-        menuBar.getMenus().addAll(refreshMenu, randomMenu, newSub);
-        pane.getChildren().add(menuBar);
+        pane.getChildren().addAll(back, refresh, random, newSub);
 
         return pane;
     }
