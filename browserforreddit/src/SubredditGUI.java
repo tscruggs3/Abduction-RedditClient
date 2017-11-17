@@ -33,7 +33,7 @@ public class SubredditGUI implements SceneRender {
     public static Scene getScene(Subreddit subreddit){
 
         HBox subredditTitle = addSubredditTitle(subreddit.getTitle());
-        HBox menuPane = addMenus();
+        HBox menuPane = addMenus(subreddit);
         VBox postsPane = addPosts(subreddit.getPostList());
         Text copyrightInfo = new Text("Reddit is a registered trademark of Reddit Inc.");
         Button nextPage = new Button("Next Page");
@@ -67,7 +67,7 @@ public class SubredditGUI implements SceneRender {
 
     }
 
-    private static HBox addMenus() {
+    private static HBox addMenus(Subreddit subreddit) {
         HBox pane = new HBox();
         pane.setAlignment(Pos.TOP_LEFT);
 
@@ -75,29 +75,13 @@ public class SubredditGUI implements SceneRender {
         menuBar.setMinWidth(SCENE_WIDTH);
 
         Menu refreshMenu = new Menu("Refresh");
-
-        /* TODO: Code to refresh to the page when clicked
-
-        refreshMenuITEM.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                //refresh the page
-            }
-        });
-        */
+        refreshMenu.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/"+ subreddit.getTitle()));
 
         Menu randomMenu = new Menu("Random");
         randomMenu.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/random"));
 
-        /* TODO: Take the user to a random post when clicked
-
-            randomMenuITEM.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                status.setText("Nooooo, we're not finished yet!");
-            }
-        });
+        /* TODO: Currently only brings User to a random subreddit but im not sure if you want
+             it to take to a random post on that random subreddit or if this is fine.
         */
 
         Menu newSub = new Menu("Find Subreddit");
