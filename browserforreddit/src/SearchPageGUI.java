@@ -55,6 +55,6 @@ public class SearchPageGUI implements SceneRender {
         VBox searchBox = new VBox();
         VBox suggestedLinks = new VBox();
 
-
+        return searchContent;
     }
 }
