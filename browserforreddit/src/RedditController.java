@@ -1,10 +1,9 @@
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
 
 public class RedditController extends Application {
 
@@ -64,6 +63,10 @@ public class RedditController extends Application {
         } else {
             display(ContentGUI.getScene(url, title));
         }
+    }
+
+    public static void requestSearchPage(){
+        display(SearchPageGUI.getScene());
     }
 
     private static Scene getInitialScene() {

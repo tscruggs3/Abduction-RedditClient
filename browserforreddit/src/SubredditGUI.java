@@ -1,12 +1,11 @@
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class SubredditGUI implements SceneRender {
      */
     public static Scene getScene(Subreddit subreddit){
 
-        HBox subredditTitle = addSubredditTitle(subreddit.getTitle());
+        HBox subredditTitle = SceneRender.addTitle(subreddit.getTitle());
         HBox menuPane = addMenus(subreddit);
         VBox postsPane = addPosts(subreddit.getPostList());
         Text copyrightInfo = new Text("Reddit is a registered trademark of Reddit Inc.");
@@ -52,17 +51,6 @@ public class SubredditGUI implements SceneRender {
         return scene;
     }
 
-    private static HBox addSubredditTitle(String title) {
-        HBox titlePane = new HBox();
-        titlePane.setAlignment(Pos.TOP_LEFT);
-
-        Text heading = new Text(title);
-        heading.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, TITLE_SIZE));
-        titlePane.getChildren().add(heading);
-
-        return titlePane;
-
-    }
 
     private static HBox addMenus(Subreddit subreddit) {
         HBox pane = new HBox();
@@ -79,11 +67,8 @@ public class SubredditGUI implements SceneRender {
         Button random = new Button("Random");
         random.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/random"));
 
-        /* TODO: Currently only brings User to a random subreddit but im not sure if you want
-             it to take to a random post on that random subreddit or if this is fine.
-        */
-
-        Button newSub = new Button("Find Subreddit");
+        Button newSub = new Button("Search for a Subreddit");
+        newSub.setOnAction(evt -> RedditController.requestSearchPage());
 
         pane.getChildren().addAll(back, refresh, random, newSub);
 
