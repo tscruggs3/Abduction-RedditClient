@@ -61,7 +61,7 @@ public class PostGUI implements SceneRender {
         Comment current = comment;
         while (current.isRoot() == false) {
             current = current.getParent();
-            //System.out.println(comment);
+
             count += 1;
         }
         return count;
@@ -76,14 +76,10 @@ public class PostGUI implements SceneRender {
     // Comment recursion
     private static void recursiveIndex(Comment comment, ArrayList<Node> output) {
         output.add(createCommentNode(comment));
-        System.out.println(comment.getUsername() + " " + comment.getVotes());
         List<Comment> children = comment.getChildren();
-        System.out.println(children.size());
         for (int i = 0; i < children.size(); i++) {
             Comment child = children.get(i);
             recursiveIndex(child,output);
-            System.out.println(child.getUsername() + " " + child.getVotes());
-
         }
     }
 
@@ -141,7 +137,6 @@ public class PostGUI implements SceneRender {
         List<Comment> commentList = post.getRoot().getChildren();
         for (int i = 0; i < commentList.size(); i++) {
             recursiveIndex(commentList.get(i), renderList);
-            System.out.println("Iterated " + i + "Times");
         }
 
         VBox comments = new VBox();
@@ -177,14 +172,26 @@ public class PostGUI implements SceneRender {
 
         title.setAlignment(Pos.CENTER_LEFT);
 
-
         return title;
     }
 
     private static Node buildContent(Post post) {
-        System.out.println(post.getContent());
+        Separator separateTop = new Separator();
+        separateTop.setOrientation(Orientation.HORIZONTAL);
+
         Text content = new Text(post.getContent());
-        return content;
+        content.setTextAlignment(TextAlignment.CENTER);
+        content.setWrappingWidth(SCENE_WIDTH - 200);
+        content.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.NORMAL, POST_TITLE_SIZE));
+
+        Separator separateBottom = new Separator();
+        separateBottom.setOrientation(Orientation.HORIZONTAL);
+
+        VBox container = new VBox(separateTop, content, separateBottom);
+        container.setAlignment(Pos.CENTER);
+        container.setSpacing(20);
+
+        return container;
     }
 
 }

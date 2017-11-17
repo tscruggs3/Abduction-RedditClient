@@ -166,7 +166,6 @@ public class RedditScraper {
             System.err.println("ERROR: Could not get postData!");
             return dummyPost();
         }
-        //System.out.println(postData);
         try {
             String author = postData.getAt("data-author");
             String votes = postData.getAt("data-score");
@@ -175,10 +174,11 @@ public class RedditScraper {
             String title = postData.findFirst("<div class='top-matter'>").findFirst("<a>").getText();
             String content;
             try{
-                postData.findFirst("<div class='md'>");
-                content = postData.getText();
+                content = user.doc.findFirst("<div class='entry unvoted'>").findFirst("<div class='md'>").findFirst("<p>").getText();
+                System.out.println("Post content found: " + content);
             } catch(NotFound e){
                 content = "";
+                System.out.println("Post content not found: " + e);
             }
             // Determine if post has content.  If not, return ""
             return new Post(author, title, content, votes, url, subreddit, scrapeComments(url, user));
@@ -227,7 +227,6 @@ public class RedditScraper {
                 String text = getText(comment);
                 String votes = getVotes(comment);
                 Comment temp = new Comment(parent, author, text, votes);
-                //System.out.println(offset(depth) + author);
 
                 parent.addChild(temp);
                 recursiveScrape(depth - 1, next, temp);
