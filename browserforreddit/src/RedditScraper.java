@@ -390,7 +390,8 @@ public class RedditScraper {
         List<String> returnList = new ArrayList<String>();
         for(int i = 0; i < templist.size(); i++){
             try {
-                Element item = templist.get(i).getElement(0);
+                // Element item = templist.get(i).getElement(0);
+                Element item = templist.get(i).findFirst("<a data-event-action = 'title'");
                 returnList.add(item.getText());
             } catch (NotFound e){
                 returnList.add("Scraper Error: Title not found");
