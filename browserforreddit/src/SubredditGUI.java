@@ -80,7 +80,7 @@ public class SubredditGUI implements SceneRender {
         int numbPosts = postList.size();
 
         for (int i = 0; i < numbPosts; i ++){
-            Node post = SceneRender.buildPostPreview(i+1, postList.get(i));
+            Node post = SceneRender.buildPostPreview(postList.get(i));
             postsVBox.getChildren().add(post);
         }
         return postsVBox;

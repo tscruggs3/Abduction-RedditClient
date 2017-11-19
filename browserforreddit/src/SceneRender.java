@@ -27,16 +27,12 @@ public interface SceneRender {
     Color POST_COLOR = Color.DARKGOLDENROD;
     Color USER_COLOR = Color.ROYALBLUE;
 
-    static Node buildPostPreview(int postNumber, PostPreview postPreview) {
+    static Node buildPostPreview(PostPreview postPreview) {
         GridPane postPane = new GridPane();
         postPane.setPadding(new Insets(10,10,10,10));
         postPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
         postPane.setVgap(0);
         postPane.setHgap(5);
-
-        Text postNumb = new Text(Integer.toString(postNumber));
-        postNumb.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
-        postPane.add(postNumb, 0, 1);
 
         Text voteCount = new Text("         " + postPreview.getVote());
         voteCount.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
@@ -68,16 +64,12 @@ public interface SceneRender {
 
     //Helper method to create the scheme of the displayed comment
     //shows relevant info such as up/down cote, main content
-    static Node buildCommentPreview(int commentNumber, CommentPreview commentPreview) {
+    static Node buildCommentPreview(CommentPreview commentPreview) {
         GridPane commentPane = new GridPane();
         commentPane.setPadding(new Insets(10,10,10,10));
         commentPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
         commentPane.setVgap(0);
         commentPane.setHgap(5);
-
-        Text commentNumb = new Text(Integer.toString(commentNumber));
-        commentNumb.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
-        commentPane.add(commentNumb, 0, 1);
 
         Label voteCount = new Label(commentPreview.getVote());
         voteCount.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));

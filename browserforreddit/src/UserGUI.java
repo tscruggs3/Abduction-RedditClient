@@ -119,7 +119,7 @@ public class UserGUI implements SceneRender {
    private static VBox addPosts(List<PostPreview> postList) {
         VBox postsVBox = new VBox();
         for (int i = 0; i < postList.size(); i ++){
-            Node post = SceneRender.buildPostPreview(i, postList.get(i));
+            Node post = SceneRender.buildPostPreview(postList.get(i));
             postsVBox.getChildren().add(post);
             System.out.println(postList.get(i).getTitle());
         }
@@ -132,7 +132,7 @@ public class UserGUI implements SceneRender {
     private static VBox addComments(List<CommentPreview> commentList) {
         VBox commentVBox = new VBox();
         for (int i = 0; i < commentList.size(); i ++){
-            Node comment = SceneRender.buildCommentPreview(i, commentList.get(i));
+            Node comment = SceneRender.buildCommentPreview(commentList.get(i));
             commentVBox.getChildren().add(comment);
         }
         return commentVBox;
