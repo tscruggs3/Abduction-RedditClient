@@ -17,8 +17,8 @@ public class StartScreenGUI implements SceneRender {
       root.setPrefSize(SCENE_WIDTH,SCENE_HEIGHT);
       
       Label programName = new Label("Abduction for Reddit");
-      root.setAlignment(programeName, Pos.Center);
-      username.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, USERNAME_SIZE));
+      root.setAlignment(programName, Pos.Center);
+      programName.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, USERNAME_SIZE));
       
       root.setCenter(programName);
       
