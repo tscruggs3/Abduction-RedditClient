@@ -26,7 +26,7 @@ public class SearchPageGUI implements SceneRender {
     /**
      * Creates a scene object.
      *
-     * @return a scene given the subreddit.
+     * @return a scene with options to go to a subreddit.
      */
     public static Scene getScene() {
 
