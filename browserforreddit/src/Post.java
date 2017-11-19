@@ -27,9 +27,9 @@ public class Post {
 	 */
 	public Post(String username, String title, String content, String votes, String contentURL, String subreddit, Comment root) {
 		this.username = username;
-		this.title = title;
-		this.content = content;
-		this.votes = votes;
+		this.title = SceneRender.filterText(title);
+		this.content = SceneRender.filterText(content);
+		this.votes = SceneRender.filterText(votes);
 		this.root = root;
 		this.subreddit = subreddit;
 		this.contentURL = contentURL;

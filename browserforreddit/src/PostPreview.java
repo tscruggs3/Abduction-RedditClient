@@ -27,8 +27,8 @@ public class PostPreview {
 		this.contentURL = contentURL;
 		this.commentURL = commentURL;
 		this.username = username;
-		this.title = title;
-		this.vote = vote;
+		this.title = SceneRender.filterText(title);
+		this.vote = SceneRender.filterText(vote);
 		this.numComments = numComments;
 	}
 

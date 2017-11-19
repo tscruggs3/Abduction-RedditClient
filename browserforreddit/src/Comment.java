@@ -33,7 +33,7 @@ public class Comment {
 		this.parent = parent;
 		this.username = username;
 		this.content = SceneRender.filterText(content);
-		this.votes = votes;
+		this.votes = SceneRender.filterText(votes);
 		this.children = new ArrayList<Comment>();
 	}
 

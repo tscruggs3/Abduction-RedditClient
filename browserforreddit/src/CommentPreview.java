@@ -19,12 +19,12 @@ public class CommentPreview {
 	 */
 
 	public CommentPreview(String title, String originalPostUrl, String fullCommentsUrl, String subreddit, String postdate, String comment, String vote) {
-		this.title = title;
+		this.title = SceneRender.filterText(title);
 		this.originalPostUrl = originalPostUrl;
 		this.fullCommentsUrl = fullCommentsUrl;
 		this.subreddit = subreddit;
 		this.postdate = postdate;
-		this.comment = comment;
+		this.comment = SceneRender.filterText(comment);
 		this.vote = vote;
 	}
 
