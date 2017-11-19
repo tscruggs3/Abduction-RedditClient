@@ -31,12 +31,10 @@ public class RedditScraper {
                 content = user.doc.findFirst("<div class='entry unvoted'>").findFirst("<div class='md'>").findFirst("<p>").getText();
             } catch(NotFound e){
                 content = "";
-                System.out.println("Post content not found: " + e);
             }
             // Determine if post has content.  If not, return ""
             return new Post(author, title, content, votes, url, subreddit, scrapeComments(url, user));
         }catch(NotFound e){
-            System.err.println("ERROR: Could not scrape post content!!");
             return dummyPost();
         }
     }
@@ -121,7 +119,6 @@ public class RedditScraper {
     }
 
     private static void getPostsAndComments(User user, Element document){
-        //System.out.println(document.innerHTML());
         try{
             document = document.findFirst("<div class='sitetable linklisting'>");
         }catch(NotFound e){
@@ -134,7 +131,6 @@ public class RedditScraper {
             try{
                 dataAttribute = post.getAt("data-type");
             } catch( NotFound e){
-                System.out.println("notfound");
                 dataAttribute = "nope";
                 continue;
             }
@@ -158,14 +154,12 @@ public class RedditScraper {
     private static PostPreview scrapeUserPost(Element post){
         try {
             String postLink = post.getAt("data-url");
-            System.out.println("eh");
             String username = post.getAt("data-author");
             String commentLink = "http://www.reddit.com/" + post.getAt("data-permalink");
             String upvotes = post.getAt("data-score");
             String numComments = post.getAt("data-comments-count") + " comments";
             Element titleElement = post.findFirst("<p class='title'>");
             String title = titleElement.findFirst("<a>").getText();
-            System.out.println(title);
             return new PostPreview(postLink, commentLink, username, title,  upvotes, numComments);
         } catch (NotFound e){
             return new PostPreview("Error", "Error","Error","Error","Error","Error");
@@ -177,7 +171,6 @@ public class RedditScraper {
         try{
             Element titlePost = post.findFirst("<a class='title'>");
             title = titlePost.getText();
-            System.out.println("hi");
             postUrl = titlePost.getAt("href");
             Element linkToComments = post.findFirst("<li class='first'>").findFirst("<a>");
             commentsUrl = "http://www.reddit.com" + linkToComments.getAt("href");
@@ -238,7 +231,6 @@ public class RedditScraper {
         catch(NotFound e){
             System.err.println(e);
         }
-        System.out.println("Comments scraped!");
         return nestedComments;
     }
 

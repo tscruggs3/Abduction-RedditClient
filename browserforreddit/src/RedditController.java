@@ -36,7 +36,6 @@ public class RedditController extends Application {
      * @param url the url of the reddit page to scrape
      */
     public static void requestSubredditPage(String url) {
-        System.out.println("Requested Subreddit at: " + url);
         Subreddit scrapedContent = RedditScraper.scrapeSubreddit(url);
         if (scrapedContent == null) {
             display(SubredditGUI.getScene(new Subreddit("Subreddit Not Found","http://www.reddit.com/r/random")));
@@ -51,7 +50,6 @@ public class RedditController extends Application {
      * @param type of user page, "Comments" or "Posts" denotes which type of content to load first
      */
     public static void requestUserPage(String url, String type) {
-        System.out.println("Requested User at: " + url);
         display(UserGUI.getScene(RedditScraper.scrapeUser(url), type));
     }
 
@@ -60,9 +58,7 @@ public class RedditController extends Application {
      * @param url the URL of the post page to scrape
      */
     public static void requestPostPage(String url) {
-        System.out.println("Requested Post at: " + url);
         Post postData = RedditScraper.scrapePost(url);
-        System.out.println("Got post data, rendering!");
         display(PostGUI.getScene(postData));
     }
 
@@ -72,9 +68,7 @@ public class RedditController extends Application {
      * @param title the title of the post
      */
     public static void requestContentPage(String url, String title) {
-        System.out.println("Requested Content at :" + url);
         if (url.contains("reddit")) {
-            System.out.println("no content 4 u");
             if (url.contains("comments")) {
                 requestPostPage(url);
             }
