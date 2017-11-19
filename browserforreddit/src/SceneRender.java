@@ -25,6 +25,8 @@ public interface SceneRender {
     double USERNAME_SIZE = 60;
     String FONT_TYPE_TITLE = "Comic Sans MS";
     String FONT_TYPE_CONTENT = "Verdana";
+    Color POST_COLOR = Color.DARKGOLDENROD;
+    Color USER_COLOR = Color.ROYALBLUE;
 
 
     static Node buildPostPreview(int postNumber, PostPreview postPreview) {
@@ -45,7 +47,7 @@ public interface SceneRender {
         Hyperlink postContent = new Hyperlink(postPreview.getTitle());
         postContent.setMinWidth(MIN_TITLE_WIDTH);
         postContent.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
-        postContent.setTextFill(Color.DARKGOLDENROD);
+        postContent.setTextFill(POST_COLOR);
         postContent.setOnAction(evt -> RedditController.requestContentPage(postPreview.getContentURL(), postPreview.getTitle()));
         postPane.add(postContent, 2, 1);
 
@@ -53,7 +55,7 @@ public interface SceneRender {
         Hyperlink username = new Hyperlink(userEntry);
         username.setMinWidth(MIN_TITLE_WIDTH);
         username.setFont(Font.font(FONT_TYPE_CONTENT, POST_TITLE_SIZE/(1.2)));
-        username.setTextFill(Color.DARKRED);
+        username.setTextFill(USER_COLOR);
         username.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ postPreview.getUsername(),"posts"));
         postPane.add(username, 3, 1);
 

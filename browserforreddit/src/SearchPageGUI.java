@@ -6,7 +6,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -117,7 +116,7 @@ public class SearchPageGUI implements SceneRender {
         Hyperlink myLink = new Hyperlink(linkName);
         myLink.setMinWidth(MIN_TITLE_WIDTH);
         myLink.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
-        myLink.setTextFill(Color.DARKGOLDENROD);
+        myLink.setTextFill(POST_COLOR);
         myLink.setOnAction(evt -> RedditController.requestSubredditPage("http://www.reddit.com/r/"+ linkName));
 
         return myLink;
