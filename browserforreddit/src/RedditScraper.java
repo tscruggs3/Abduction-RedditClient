@@ -178,7 +178,8 @@ public class RedditScraper {
             Element tagline = post.findFirst("<p class='tagline'>");
             postTiming = tagline.findFirst("<time>").getText();
             votes = tagline.findFirst("<span class='score unvoted'>").getAt("title");
-            comment = post.findFirst("<div class='md'>").getText();
+            comment = post.findFirst("<div class='md'>").innerHTML();
+            //System.out.println(comment);
             return new CommentPreview(title, postUrl, commentsUrl, subreddit, postTiming, comment, votes);
         }catch(NotFound e){
             System.err.println(e);
