@@ -22,7 +22,7 @@ public interface SceneRender {
     double TITLE_SIZE = 30;
     double POST_TITLE_SIZE = 18;
     double USERNAME_SIZE = 60;
-    String FONT_TYPE_TITLE = "Comic Sans MS";
+    String FONT_TYPE_TITLE = "Tahoma";
     String FONT_TYPE_CONTENT = "Verdana";
     Color POST_COLOR = Color.DARKGOLDENROD;
     Color USER_COLOR = Color.ROYALBLUE;

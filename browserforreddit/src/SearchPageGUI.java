@@ -1,3 +1,4 @@
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,8 +16,6 @@ import java.util.List;
 
 
 /**
- * @author Thomas Scruggs
- *
  * A class that creates the GUI for the search page view
  */
 
@@ -34,6 +33,7 @@ public class SearchPageGUI implements SceneRender {
         Text copyrightInfo = new Text("Reddit is a registered trademark of Reddit Inc.");
 
         HBox searchContent = createSearchContent();
+        searchContent.setPadding(new Insets(20));
 
         HBox header = createHeader();
         //Sets the spacing between the title and the search options

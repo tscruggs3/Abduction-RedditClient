@@ -1,3 +1,4 @@
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -29,6 +30,7 @@ public class SubredditGUI implements SceneRender {
     public static Scene getScene(Subreddit subreddit){
 
         HBox subredditTitle = SceneRender.addTitle(subreddit.getTitle());
+        subredditTitle.setPadding(new Insets(20));
         HBox menuPane = addMenus(subreddit);
         VBox postsPane = addPosts(subreddit.getPostList());
         Text copyrightInfo = new Text("Reddit is a registered trademark of Reddit Inc.");
