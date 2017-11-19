@@ -125,111 +125,111 @@ public class RedditScraper {
         User scrapedUser = new User(username, postKarma, linkKarma);
         getPostsAndComments(scrapedUser, userDocument);
         return scrapedUser;
-   }
-
-   private static void getPostsAndComments(User user, Element document){
-        //System.out.println(document.innerHTML());
-       try{
-           document = document.findFirst("<div class='sitetable linklisting'>");
-       }catch(NotFound e){
-           System.out.println("could not scrape user posts");
-           return;
-       }
-       Elements history = document.findEach("<div data-author='" + user.getUsername() + "'>");
-       System.out.println(history);
-       for (Element post: history) {
-           String dataAttribute;
-           try{
-               dataAttribute = post.getAt("data-type");
-           } catch( NotFound e){
-               System.out.println("notfound");
-               dataAttribute = "nope";
-               continue;
-           }
-
-           if(dataAttribute.equals( "link")){
-               System.out.println("scraping link");
-               user.addPost(scrapeUserPost(post));
-               System.out.println(post);
-               continue;
-           }
-           if(dataAttribute.equals("comment")){
-               System.out.println("scraping comment");
-               user.addComment(scrapeUserComment(post));
-               System.out.println(post);
-               continue;
-           }
-       }
-   }
-
-   private static String getSubredditFromLink(String s){
-       String containsAnswer = s.substring(s.lastIndexOf("/r/"));
-       return containsAnswer.substring(0, containsAnswer.indexOf("/"));
-   }
-
-
-   private static PostPreview scrapeUserPost(Element post){
-       try {
-           String postLink = post.getAt("data-url");
-           System.out.println("eh");
-           String username = post.getAt("data-author");
-           String commentLink = "http://www.reddit.com/" + post.getAt("data-permalink");
-           String upvotes = post.getAt("data-score");
-           String numComments = post.getAt("data-comments-count") + " comments";
-           Element titleElement = post.findFirst("<p class='title'>");
-           String title = titleElement.findFirst("<a>").getText();
-           System.out.println(title);
-           return new PostPreview(postLink, commentLink, username, title,  upvotes, numComments);
-       } catch (NotFound e){
-           return new PostPreview("Error", "Error","Error","Error","Error","Error");
-       }
-   }
-
-   private static CommentPreview scrapeUserComment(Element post){
-       String title, postUrl, commentsUrl, subreddit, comment, votes, postTiming;
-       try{
-           Element titlePost = post.findFirst("<a class='title'>");
-           title = titlePost.getText();
-           System.out.println("hi");
-           postUrl = titlePost.getAt("href");
-           Element linkToComments = post.findFirst("<li class='first'>").findFirst("<a>");
-           commentsUrl = "http://www.reddit.com" + linkToComments.getAt("href");
-           subreddit = getSubredditFromLink(commentsUrl);
-           Element tagline = post.findFirst("<p class='tagline'>");
-           postTiming = tagline.findFirst("<time>").getText();
-           votes = tagline.findFirst("<span class='score unvoted'>").getAt("title");
-           comment = post.findFirst("<div class='md'>").getText();
-           return new CommentPreview(title, postUrl, commentsUrl, subreddit, postTiming, comment, votes);
-       }catch(NotFound e){
-           System.err.println(e);
-           return new CommentPreview("error", "error", "error", "error","error", "error","error");
-       }
-   }
-
-/*
-    public CommentPreview(String title, String originalPostUrl, String fullCommentsUrl, String subreddit, String postdate, String comment, String vote) {
-        this.title = title;
-        this.originalPostUrl = originalPostUrl;
-        this.fullCommentsUrl = fullCommentsUrl;
-        this.subreddit = subreddit;
-        this.postdate = postdate;
-        this.comment = comment;
-        this.vote = vote;
     }
-  */
-   private static String getUsername(String link){
-       return link.substring(link.lastIndexOf("user/") + 5);
-   }
 
-   private static String getPostKarma(Element userDocument){
-       String returnValue;
-       try{
-           returnValue = userDocument.findFirst("<span class='karma'>").getText();
-       }catch(NotFound e){
-           returnValue = "Could not scrape Karma";
-       }
-       return returnValue;
-   }
+    private static void getPostsAndComments(User user, Element document){
+        //System.out.println(document.innerHTML());
+        try{
+            document = document.findFirst("<div class='sitetable linklisting'>");
+        }catch(NotFound e){
+            System.out.println("could not scrape user posts");
+            return;
+        }
+        Elements history = document.findEach("<div data-author='" + user.getUsername() + "'>");
+        System.out.println(history);
+        for (Element post: history) {
+            String dataAttribute;
+            try{
+                dataAttribute = post.getAt("data-type");
+            } catch( NotFound e){
+                System.out.println("notfound");
+                dataAttribute = "nope";
+                continue;
+            }
+
+            if(dataAttribute.equals( "link")){
+                System.out.println("scraping link");
+                user.addPost(scrapeUserPost(post));
+                System.out.println(post);
+                continue;
+            }
+            if(dataAttribute.equals("comment")){
+                System.out.println("scraping comment");
+                user.addComment(scrapeUserComment(post));
+                System.out.println(post);
+                continue;
+            }
+        }
+    }
+
+    private static String getSubredditFromLink(String s){
+        String containsAnswer = s.substring(s.lastIndexOf("/r/"));
+        return containsAnswer.substring(0, containsAnswer.indexOf("/"));
+    }
+
+
+    private static PostPreview scrapeUserPost(Element post){
+        try {
+            String postLink = post.getAt("data-url");
+            System.out.println("eh");
+            String username = post.getAt("data-author");
+            String commentLink = "http://www.reddit.com/" + post.getAt("data-permalink");
+            String upvotes = post.getAt("data-score");
+            String numComments = post.getAt("data-comments-count") + " comments";
+            Element titleElement = post.findFirst("<p class='title'>");
+            String title = titleElement.findFirst("<a>").getText();
+            System.out.println(title);
+            return new PostPreview(postLink, commentLink, username, title,  upvotes, numComments);
+        } catch (NotFound e){
+            return new PostPreview("Error", "Error","Error","Error","Error","Error");
+        }
+    }
+
+    private static CommentPreview scrapeUserComment(Element post){
+        String title, postUrl, commentsUrl, subreddit, comment, votes, postTiming;
+        try{
+            Element titlePost = post.findFirst("<a class='title'>");
+            title = titlePost.getText();
+            System.out.println("hi");
+            postUrl = titlePost.getAt("href");
+            Element linkToComments = post.findFirst("<li class='first'>").findFirst("<a>");
+            commentsUrl = "http://www.reddit.com" + linkToComments.getAt("href");
+            subreddit = getSubredditFromLink(commentsUrl);
+            Element tagline = post.findFirst("<p class='tagline'>");
+            postTiming = tagline.findFirst("<time>").getText();
+            votes = tagline.findFirst("<span class='score unvoted'>").getAt("title");
+            comment = post.findFirst("<div class='md'>").getText();
+            return new CommentPreview(title, postUrl, commentsUrl, subreddit, postTiming, comment, votes);
+        }catch(NotFound e){
+            System.err.println(e);
+            return new CommentPreview("error", "error", "error", "error","error", "error","error");
+        }
+    }
+
+    /*
+        public CommentPreview(String title, String originalPostUrl, String fullCommentsUrl, String subreddit, String postdate, String comment, String vote) {
+            this.title = title;
+            this.originalPostUrl = originalPostUrl;
+            this.fullCommentsUrl = fullCommentsUrl;
+            this.subreddit = subreddit;
+            this.postdate = postdate;
+            this.comment = comment;
+            this.vote = vote;
+        }
+      */
+    private static String getUsername(String link){
+        return link.substring(link.lastIndexOf("user/") + 5);
+    }
+
+    private static String getPostKarma(Element userDocument){
+        String returnValue;
+        try{
+            returnValue = userDocument.findFirst("<span class='karma'>").getText();
+        }catch(NotFound e){
+            returnValue = "Could not scrape Karma";
+        }
+        return returnValue;
+    }
 
     private static String getLinkKarma(Element userDocument){
         String returnValue;
@@ -241,9 +241,9 @@ public class RedditScraper {
         return returnValue;
     }
 
-   private static User dummyUser(){
-       return new User("Jane Doe", "-123456789", "-123456789");
-   }
+    private static User dummyUser(){
+        return new User("Jane Doe", "-123456789", "-123456789");
+    }
 
 
 
@@ -331,18 +331,18 @@ public class RedditScraper {
     }
 
     private static List<String> getPostLinks(UserAgent user) {
-       Elements titles = user.doc.findEvery("<p class=title>");//title and link to content
-       List<Element> templist = titles.toList();
-       List<String> returnList = new ArrayList<String>();
-       for(int i = 0; i < templist.size(); i++){
-           try {
-              Element item = templist.get(i);
-              returnList.add(item.findFirst("<a>").getAt("href"));
-           } catch (NotFound e){
-               returnList.add("Scraper Error: link not found");
-           }
-       }
-       return returnList;
+        Elements titles = user.doc.findEvery("<p class=title>");//title and link to content
+        List<Element> templist = titles.toList();
+        List<String> returnList = new ArrayList<String>();
+        for(int i = 0; i < templist.size(); i++){
+            try {
+                Element item = templist.get(i);
+                returnList.add(item.findFirst("<a>").getAt("href"));
+            } catch (NotFound e){
+                returnList.add("Scraper Error: link not found");
+            }
+        }
+        return returnList;
     }
 
     private static List<String> getNumComments(UserAgent user) {
