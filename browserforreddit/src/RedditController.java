@@ -37,7 +37,12 @@ public class RedditController extends Application {
      */
     public static void requestSubredditPage(String url) {
         System.out.println("Requested Subreddit at: " + url);
-        display(SubredditGUI.getScene(RedditScraper.scrapeSubreddit(url)));
+        Subreddit scrapedContent = RedditScraper.scrapeSubreddit(url);
+        if (scrapedContent == null) {
+            display(SubredditGUI.getScene(new Subreddit("Subreddit Not Found","http://www.reddit.com/r/random")));
+        } else {
+            display(SubredditGUI.getScene(scrapedContent));
+        }
     }
 
     /**
