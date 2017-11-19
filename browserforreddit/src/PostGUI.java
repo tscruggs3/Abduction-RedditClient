@@ -106,6 +106,7 @@ public class PostGUI implements SceneRender {
 
         Hyperlink username = new Hyperlink(comment.getUsername());
         username.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
+        username.setTextFill(USER_COLOR);
 
         username.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ comment.getUsername(), "posts"));
         postPane.add(username, 2,0);
@@ -164,6 +165,7 @@ public class PostGUI implements SceneRender {
 
         Hyperlink author = new Hyperlink("by " + post.getUsername());
         author.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, POST_TITLE_SIZE));
+        author.setTextFill(USER_COLOR);
         author.setOnAction(evt -> RedditController.requestUserPage("reddit.com/user/"+ post.getUsername(),"posts"));
         author.setMaxWidth(200);
 
