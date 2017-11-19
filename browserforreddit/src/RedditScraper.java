@@ -121,7 +121,6 @@ public class RedditScraper {
     }
 
     private static void getPostsAndComments(User user, Element document){
-        //System.out.println(document.innerHTML());
         try{
             document = document.findFirst("<div class='sitetable linklisting'>");
         }catch(NotFound e){
@@ -158,14 +157,12 @@ public class RedditScraper {
     private static PostPreview scrapeUserPost(Element post){
         try {
             String postLink = post.getAt("data-url");
-            System.out.println("eh");
             String username = post.getAt("data-author");
             String commentLink = "http://www.reddit.com/" + post.getAt("data-permalink");
             String upvotes = post.getAt("data-score");
             String numComments = post.getAt("data-comments-count") + " comments";
             Element titleElement = post.findFirst("<p class='title'>");
             String title = titleElement.findFirst("<a>").getText();
-            System.out.println(title);
             return new PostPreview(postLink, commentLink, username, title,  upvotes, numComments);
         } catch (NotFound e){
             return new PostPreview("Error", "Error","Error","Error","Error","Error");
@@ -177,7 +174,6 @@ public class RedditScraper {
         try{
             Element titlePost = post.findFirst("<a class='title'>");
             title = titlePost.getText();
-            System.out.println("hi");
             postUrl = titlePost.getAt("href");
             Element linkToComments = post.findFirst("<li class='first'>").findFirst("<a>");
             commentsUrl = "http://www.reddit.com" + linkToComments.getAt("href");
@@ -185,7 +181,8 @@ public class RedditScraper {
             Element tagline = post.findFirst("<p class='tagline'>");
             postTiming = tagline.findFirst("<time>").getText();
             votes = tagline.findFirst("<span class='score unvoted'>").getAt("title");
-            comment = post.findFirst("<div class='md'>").getText();
+            comment = post.findFirst("<div class='md'>").innerHTML();
+            //System.out.println(comment);
             return new CommentPreview(title, postUrl, commentsUrl, subreddit, postTiming, comment, votes);
         }catch(NotFound e){
             System.err.println(e);
