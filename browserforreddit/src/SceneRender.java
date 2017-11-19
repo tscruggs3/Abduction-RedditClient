@@ -14,7 +14,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-
 public interface SceneRender {
 
     double SCENE_WIDTH = 1020;
@@ -25,7 +24,6 @@ public interface SceneRender {
     double USERNAME_SIZE = 60;
     String FONT_TYPE_TITLE = "Comic Sans MS";
     String FONT_TYPE_CONTENT = "Verdana";
-
 
     static Node buildPostPreview(int postNumber, PostPreview postPreview) {
         GridPane postPane = new GridPane();

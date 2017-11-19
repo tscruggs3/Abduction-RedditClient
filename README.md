@@ -32,6 +32,8 @@ Each class contains the methods for a specific type of page to maximize cohesion
 
 ## Executing Abduction
 
+First, you will need to install the Jaunt 1.3.5 library.  This is available in the jaunt1.3.5.jar file available on the top level of the repository.  This can be installed in IntelliJ by clicking File > Project Structure, selecting 'Libraries' in the resulting popup, clicking the '+' button, then navigating to the jaunt1.3.5.jar file.
+
 The executable main method for the Abduction client is in the RedditController class.  After excecuting this method, the program will open.
 
 ## Known Bugs:
