@@ -67,12 +67,6 @@ public class PostGUI implements SceneRender {
         return count;
     }
 
-    private static void addTopLevel(Comment comment, ArrayList<Node> output) {
-        for (Comment child: comment.getChildren()) {
-            output.add(createCommentNode(child));
-        }
-    }
-
     // Comment recursion
     private static void recursiveIndex(Comment comment, ArrayList<Node> output) {
         output.add(createCommentNode(comment));
@@ -166,8 +160,9 @@ public class PostGUI implements SceneRender {
         Hyperlink author = new Hyperlink("by " + post.getUsername());
         author.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, POST_TITLE_SIZE));
         author.setTextFill(USER_COLOR);
-        author.setOnAction(evt -> RedditController.requestUserPage("reddit.com/user/"+ post.getUsername(),"posts"));
+        author.setOnAction(evt -> RedditController.requestUserPage("http://www.reddit.com/user/"+ post.getUsername(),"posts"));
         author.setMaxWidth(200);
+
 
         HBox title = new HBox(back, subredditName,postName,author);
         title.setSpacing(20);
