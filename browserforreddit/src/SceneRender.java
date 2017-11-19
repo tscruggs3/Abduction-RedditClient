@@ -118,7 +118,7 @@ public interface SceneRender {
         String filtered = toFilter.replaceAll("\\<.*?>","");
         filtered = filtered.replaceAll("&#39;","'");
         filtered = filtered.replaceAll("&quot;","\"");
-        filtered = filtered.replaceAll("&bull;","\"");
+        filtered = filtered.replaceAll("&bull;","*");
         return filtered;
     }
 
