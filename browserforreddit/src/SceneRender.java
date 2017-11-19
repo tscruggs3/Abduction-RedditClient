@@ -76,14 +76,18 @@ public interface SceneRender {
         commentPane.setHgap(5);
 
         Text commentNumb = new Text(Integer.toString(commentNumber));
+        commentNumb.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
         commentPane.add(commentNumb, 0, 1);
 
         Label voteCount = new Label(commentPreview.getVote());
+        voteCount.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
         commentPane.add(voteCount, 1, 1);
         commentPane.setHalignment(voteCount, HPos.CENTER);
 
         Hyperlink commentContent = new Hyperlink(commentPreview.getTitle());
         commentContent.setMinWidth(MIN_TITLE_WIDTH/2);
+        commentContent.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
+        commentContent.setTextFill(POST_COLOR);
         commentContent.setOnAction(evt -> RedditController.requestPostPage(commentPreview.getOriginalPostUrl()));
         commentPane.add(commentContent, 2, 1);
 
