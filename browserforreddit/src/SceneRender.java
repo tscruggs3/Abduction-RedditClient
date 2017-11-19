@@ -14,7 +14,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-
 public interface SceneRender {
 
     double SCENE_WIDTH = 1020;
@@ -27,7 +26,6 @@ public interface SceneRender {
     String FONT_TYPE_CONTENT = "Verdana";
     Color POST_COLOR = Color.DARKGOLDENROD;
     Color USER_COLOR = Color.ROYALBLUE;
-
 
     static Node buildPostPreview(int postNumber, PostPreview postPreview) {
         GridPane postPane = new GridPane();

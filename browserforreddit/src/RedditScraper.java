@@ -199,17 +199,6 @@ public class RedditScraper {
         }
     }
 
-    /*
-        public CommentPreview(String title, String originalPostUrl, String fullCommentsUrl, String subreddit, String postdate, String comment, String vote) {
-            this.title = title;
-            this.originalPostUrl = originalPostUrl;
-            this.fullCommentsUrl = fullCommentsUrl;
-            this.subreddit = subreddit;
-            this.postdate = postdate;
-            this.comment = comment;
-            this.vote = vote;
-        }
-      */
     private static String getUsername(String link){
         return link.substring(link.lastIndexOf("user/") + 5);
     }
@@ -400,7 +389,7 @@ public class RedditScraper {
                 }
                 returnList.add(link);
             } catch (NotFound e){
-                returnList.add("Scrape Error: User not found");
+                returnList.add("[Deleted]");
             }
         }
         return returnList;

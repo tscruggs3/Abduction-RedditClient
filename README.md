@@ -24,13 +24,15 @@ We built data structure objects to represent different aspects of the Reddit int
 
 We use the Observer and MVC design patterns in the code structure for the client.  The Observer pattern is used to facilitate communication between the user interface and the RedditController class, where specific types of buttons call specific methods that then lead to desired actions.
 
-Further, the bulk of our class design falls under the MVC pattern.  Our RedditScraper class is our model, containing the methods necessary to gather and process the data shown by the client.  The RedditController class is our Controller, taking input from the user interface and calling the proper methods in the RedditScraper.  Finally, the SceneRender interface and its implementing classes PostGUI, ContentGUI, SubredditGUI, and UserGUI represent the View, sending user input to the Controller and encompassing the user interface.
+Further, the bulk of our class design falls under the MVC pattern.  Our RedditScraper class is our model, containing the methods necessary to gather and process the data shown by the client.  The RedditController class is our Controller, taking input from the user interface and calling the proper methods in the RedditScraper.  Finally, the SceneRender interface and its implementing classes PostGUI, ContentGUI, SubredditGUI, UserGUI, and SearchPageGUI represent the View, sending user input to the Controller and encompassing the user interface.
 
 ### Why separate the View into several classes and an interface?
 
 Each class contains the methods for a specific type of page to maximize cohesion in reading the code.  We felt that placing all the individual render methods in one class would result in sprawling, unreadable code, and wanted to ensure that our final project was cohesive and readable.  Further, we use an interface to contain static methods used by multiple View-related subclasses and to establish critical variable values such as window sizing and font attributes without redundantly placing each value in each subclass.
 
 ## Executing Abduction
+
+First, you will need to install the Jaunt 1.3.5 library.  This is available in the jaunt1.3.5.jar file available on the top level of the repository.  This can be installed in IntelliJ by clicking File > Project Structure, selecting 'Libraries' in the resulting popup, clicking the '+' button, then navigating to the jaunt1.3.5.jar file.
 
 The executable main method for the Abduction client is in the RedditController class.  After excecuting this method, the program will open.
 

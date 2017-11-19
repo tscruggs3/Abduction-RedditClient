@@ -25,27 +25,35 @@ public class RedditController extends Application {
     }
 
     /**
-     * This function is called by the GUIs in order to go to the previously visited page
+     * Switches from the current scene to the previous scene
      */
     public static void requestBack() {
         backButton();
     }
 
-    /**Scrapes a page and returns an appropriate gui
-     *
+    /**
+     * Scrapes a subreddit page and returns an appropriate gui
      * @param url the url of the reddit page to scrape
      */
-
     public static void requestSubredditPage(String url) {
         System.out.println("Requested Subreddit at: " + url);
         display(SubredditGUI.getScene(RedditScraper.scrapeSubreddit(url)));
     }
 
+    /**
+     * Scrapes a user page and returns an appropriate gui
+     * @param url the URL of the user page to scrape
+     * @param type of user page, "Comments" or "Posts" denotes which type of content to load first
+     */
     public static void requestUserPage(String url, String type) {
         System.out.println("Requested User at: " + url);
         display(UserGUI.getScene(RedditScraper.scrapeUser(url), type));
     }
 
+    /**
+     * Scrapes a post page and returns an appropriate gui
+     * @param url the URL of the post page to scrape
+     */
     public static void requestPostPage(String url) {
         System.out.println("Requested Post at: " + url);
         Post postData = RedditScraper.scrapePost(url);
@@ -53,6 +61,11 @@ public class RedditController extends Application {
         display(PostGUI.getScene(postData));
     }
 
+    /**
+     * Returns an HTML view of any website, used to show non-reddit linked content
+     * @param url the url of linked content
+     * @param title the title of the post
+     */
     public static void requestContentPage(String url, String title) {
         System.out.println("Requested Content at :" + url);
         if (url.contains("reddit")) {
@@ -68,36 +81,11 @@ public class RedditController extends Application {
         }
     }
 
+    /**
+     * Returns the subreddit search page
+     */
     public static void requestSearchPage(){
         display(SearchPageGUI.getScene());
-    }
-
-    private static Scene getInitialScene() {
-        Subreddit dummy = new Subreddit("test","test");
-        PostPreview post1 = new PostPreview("post1", "post1","janedoe","test post plz ignore","99191","32");
-        PostPreview post2 = new PostPreview("post1", "post1","janedoe","give me karma","-32000","32");
-        dummy.addPostPreview(post1);
-        dummy.addPostPreview(post2);
-
-        return SubredditGUI.getScene(dummy);
-    }
-
-    private static User buildFakeUser() {
-        User something =  new User("janedoe","122","33333");
-        return something;
-    }
-
-    private static Post buildFakePost() {
-        Subreddit dummy = new Subreddit("r/test","test");
-        Post demoPost = new Post("/u/janedoe","test post plz ignore", "thanks", "42", "", "test", new Comment());
-        Comment initial = new Comment(null, "/u/spez","lmao this is lit","99");
-        Comment secondTopLevel = new Comment(null, "/u/nobody","why did u even post this", "-39");
-        demoPost.getRoot().addChild(initial);
-        demoPost.getRoot().addChild(secondTopLevel);
-        initial.addChild(new Comment(initial,"/u/jordansybesma","no.","9001"));
-        initial.addChild(new Comment(initial,"/u/jordansybesma","yes.","9002"));
-
-        return demoPost;
     }
 
     private static void display(Scene scene){
@@ -105,11 +93,6 @@ public class RedditController extends Application {
         mainStage.setScene(pages.peek());;
     }
 
-    /*
-    TODO: Detect if a scene has a webview, find it's WebEngine and have it load null if so
-    webView.getEngine().load(null);
-    Otherwise, the webview will play youtube videos on loop in the background.
-     */
     private static void backButton() {
         if(pages.size() > 1) {
             pages.pop();
@@ -117,7 +100,10 @@ public class RedditController extends Application {
         mainStage.setScene(pages.peek());;
     }
 
-
+    /**
+     * Executes the program.
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
