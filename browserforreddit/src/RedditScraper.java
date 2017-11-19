@@ -31,12 +31,10 @@ public class RedditScraper {
                 content = user.doc.findFirst("<div class='entry unvoted'>").findFirst("<div class='md'>").findFirst("<p>").getText();
             } catch(NotFound e){
                 content = "";
-                System.out.println("Post content not found: " + e);
             }
             // Determine if post has content.  If not, return ""
             return new Post(author, title, content, votes, url, subreddit, scrapeComments(url, user));
         }catch(NotFound e){
-            System.err.println("ERROR: Could not scrape post content!!");
             return dummyPost();
         }
     }
@@ -133,7 +131,6 @@ public class RedditScraper {
             try{
                 dataAttribute = post.getAt("data-type");
             } catch( NotFound e){
-                System.out.println("notfound");
                 dataAttribute = "nope";
                 continue;
             }
@@ -235,7 +232,6 @@ public class RedditScraper {
         catch(NotFound e){
             System.err.println(e);
         }
-        System.out.println("Comments scraped!");
         return nestedComments;
     }
 
