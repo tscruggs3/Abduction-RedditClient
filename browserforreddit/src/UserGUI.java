@@ -4,8 +4,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -25,18 +27,21 @@ public class UserGUI implements SceneRender {
     public static Scene getScene(User user, String type) {
         BorderPane root = new BorderPane();
         root.setPrefSize(SCENE_WIDTH,SCENE_HEIGHT);
-        VBox userInfo = createUserInfo(user);
-        Node centralPane;
+        HBox userInfo = createUserInfo(user);
+        Node centerPane;
 
         if(type.equals("Comments")) {
-            centralPane = addComments(user.getComments());
+            centerPane = addComments(user.getComments());
         } else {
-            centralPane = addPosts(user.getPosts());
+            centerPane = addPosts(user.getPosts());
             System.out.println("User Posts: " + user.getPosts().size());
         }
-       
+
+        ScrollPane postScroller = new ScrollPane(centerPane);
+        postScroller.setFitToWidth(true);
+
         root.setTop(userInfo);
-        root.setLeft(centralPane);
+        root.setCenter(postScroller);
            
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         return scene;
@@ -45,8 +50,10 @@ public class UserGUI implements SceneRender {
 
    //Creates a VBox on the Top of the BorderPane with all info of the user
    //We can change the font/size/color of stuff if we want to later
-    private static VBox createUserInfo(User user) {
+    private static HBox createUserInfo(User user) {
         VBox info = new VBox(15);
+
+        HBox header = new HBox(255);
 
         Label username  = new Label("/u/" + user.getUsername());
         username.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, USERNAME_SIZE));
@@ -55,11 +62,13 @@ public class UserGUI implements SceneRender {
 
         Node numPane = addNums(user);
         Node buttonPane = addButtons(user);
-      
+
+        info.getChildren().addAll(username, numPane, buttonPane);
+        header.getChildren().addAll(back, info);
         info.setAlignment(Pos.CENTER);
       
-        info.getChildren().addAll(username, numPane, buttonPane, back);
-        return info;
+
+        return header;
     }
     
     //Adds the posts/comments buttons that switch the information shown below the topPane of BorderPane
