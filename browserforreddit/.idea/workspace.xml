@@ -70,8 +70,8 @@
       <file leaf-file-name="RedditController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/RedditController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="61" column="13" lean-forward="true" selection-start-line="61" selection-start-column="13" selection-end-line="61" selection-end-column="13" />
+            <state relative-caret-position="390">
+              <caret line="62" column="32" lean-forward="false" selection-start-line="62" selection-start-column="32" selection-end-line="62" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -220,7 +220,6 @@
         <option value="$PROJECT_DIR$/src/ContentGUI.java" />
         <option value="$PROJECT_DIR$/src/Subreddit.java" />
         <option value="$PROJECT_DIR$/src/SubredditGUI.java" />
-        <option value="$PROJECT_DIR$/src/RedditController.java" />
         <option value="$PROJECT_DIR$/src/RedditScraper.java" />
         <option value="$PROJECT_DIR$/src/PostGUI.java" />
         <option value="$PROJECT_DIR$/src/Comment.java" />
@@ -229,6 +228,7 @@
         <option value="$PROJECT_DIR$/src/CommentPreview.java" />
         <option value="$PROJECT_DIR$/src/SceneRender.java" />
         <option value="$PROJECT_DIR$/src/UserGUI.java" />
+        <option value="$PROJECT_DIR$/src/RedditController.java" />
       </list>
     </option>
   </component>
@@ -802,12 +802,12 @@
       <workItem from="1510353149746" duration="1605000" />
       <workItem from="1510770222348" duration="397000" />
       <workItem from="1510942367999" duration="4888000" />
-      <workItem from="1511125376790" duration="3902000" />
+      <workItem from="1511125376790" duration="4166000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19215000" />
+    <option name="totallyTimeSpent" value="19479000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1181,8 +1181,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/RedditController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="61" column="13" lean-forward="true" selection-start-line="61" selection-start-column="13" selection-end-line="61" selection-end-column="13" />
+        <state relative-caret-position="390">
+          <caret line="62" column="32" lean-forward="false" selection-start-line="62" selection-start-column="32" selection-end-line="62" selection-end-column="32" />
           <folding />
         </state>
       </provider>

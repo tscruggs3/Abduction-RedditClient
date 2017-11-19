@@ -60,6 +60,9 @@ public class RedditController extends Application {
             if (url.contains("comments")) {
                 requestPostPage(url);
             }
+        } else if (url.contains("/r/")) {
+            String newUrl = "http://www.reddit.com" + url;
+            requestPostPage(newUrl);
         } else {
             display(ContentGUI.getScene(url, title));
         }
