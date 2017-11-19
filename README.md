@@ -24,7 +24,7 @@ We built data structure objects to represent different aspects of the Reddit int
 
 We use the Observer and MVC design patterns in the code structure for the client.  The Observer pattern is used to facilitate communication between the user interface and the RedditController class, where specific types of buttons call specific methods that then lead to desired actions.
 
-Further, the bulk of our class design falls under the MVC pattern.  Our RedditScraper class is our model, containing the methods necessary to gather and process the data shown by the client.  The RedditController class is our Controller, taking input from the user interface and calling the proper methods in the RedditScraper.  Finally, the SceneRender interface and its implementing classes PostGUI, ContentGUI, SubredditGUI, and UserGUI represent the View, sending user input to the Controller and encompassing the user interface.
+Further, the bulk of our class design falls under the MVC pattern.  Our RedditScraper class is our model, containing the methods necessary to gather and process the data shown by the client.  The RedditController class is our Controller, taking input from the user interface and calling the proper methods in the RedditScraper.  Finally, the SceneRender interface and its implementing classes PostGUI, ContentGUI, SubredditGUI, UserGUI, and SearchPageGUI represent the View, sending user input to the Controller and encompassing the user interface.
 
 ### Why separate the View into several classes and an interface?
 
