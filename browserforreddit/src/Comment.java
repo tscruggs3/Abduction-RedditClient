@@ -32,9 +32,7 @@ public class Comment {
 	public Comment(Comment parent, String username, String content, String votes) {
 		this.parent = parent;
 		this.username = username;
-		this.content = content.replaceAll("\\<.*?>","");
-		this.content = this.content.replaceAll("&#39;","'");
-		this.content = this.content.replaceAll("&quot;","\"");
+		this.content = SceneRender.filterText(content);
 		this.votes = votes;
 		this.children = new ArrayList<Comment>();
 	}
