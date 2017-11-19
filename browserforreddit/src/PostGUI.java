@@ -32,24 +32,9 @@ public class PostGUI implements SceneRender {
     public static Scene getScene(Post post) {
         Pane page = new VBox();
         Pane title = buildTitle(post);
-
-        /* Background code that for some reason isn't working
-
-
-        BackgroundFill myBF = new BackgroundFill(Color.BLUEVIOLET, new CornerRadii(1),
-                new Insets(0.0,0.0,0.0,0.0));// or null for the padding
-//then you set to your node or container or layout
-        title.setBackground(new Background(myBF));
-
-        */
-
         Node content = buildContent(post);
-
         ScrollPane comments = buildComments(post);
-
         page.getChildren().addAll(title,content,comments);
-
-
         Scene scene = new Scene(page, SCENE_WIDTH, SCENE_HEIGHT);
 
         return scene;
