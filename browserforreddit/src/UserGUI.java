@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 import java.util.List;
 
@@ -52,9 +53,10 @@ public class UserGUI implements SceneRender {
     private static HBox createUserInfo(User user) {
         VBox info = new VBox(15);
 
-        HBox header = new HBox(255);
+        HBox header = new HBox(55);
+        header.setAlignment(Pos.BOTTOM_LEFT);
 
-        Label username  = new Label("/u/" + user.getUsername());
+        Text username  = new Text("/u/" + user.getUsername());
         username.setFont(Font.font(FONT_TYPE_TITLE, FontWeight.BOLD, USERNAME_SIZE));
 
         Button back = SceneRender.buildBackButton();
@@ -62,10 +64,9 @@ public class UserGUI implements SceneRender {
         Node numPane = addNums(user);
         Node buttonPane = addButtons(user);
 
-        info.getChildren().addAll(username, numPane, buttonPane);
-        header.getChildren().addAll(back, info);
+        info.getChildren().addAll(numPane, buttonPane);
         info.setAlignment(Pos.CENTER);
-      
+        header.getChildren().addAll(back, username, info);
 
         return header;
     }

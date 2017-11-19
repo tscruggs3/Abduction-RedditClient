@@ -21,7 +21,7 @@ public interface SceneRender {
     double MIN_TITLE_WIDTH = 250;
     double TITLE_SIZE = 30;
     double POST_TITLE_SIZE = 18;
-    double USERNAME_SIZE = 60;
+    double USERNAME_SIZE = 40;
     String FONT_TYPE_TITLE = "Tahoma";
     String FONT_TYPE_CONTENT = "Verdana";
     Color POST_COLOR = Color.DARKGOLDENROD;
@@ -66,7 +66,7 @@ public interface SceneRender {
     //shows relevant info such as up/down cote, main content
     static Node buildCommentPreview(CommentPreview commentPreview) {
         GridPane commentPane = new GridPane();
-        commentPane.setPadding(new Insets(10,10,10,10));
+        commentPane.setPadding(new Insets(10,10,10,65));
         commentPane.setMinSize(SCENE_WIDTH/2, SCENE_HEIGHT/10);
         commentPane.setVgap(0);
         commentPane.setHgap(5);
@@ -76,12 +76,17 @@ public interface SceneRender {
         commentPane.add(voteCount, 1, 1);
         commentPane.setHalignment(voteCount, HPos.CENTER);
 
-        Hyperlink commentContent = new Hyperlink(commentPreview.getTitle());
-        commentContent.setMinWidth(MIN_TITLE_WIDTH/2);
-        commentContent.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
-        commentContent.setTextFill(POST_COLOR);
-        commentContent.setOnAction(evt -> RedditController.requestPostPage(commentPreview.getOriginalPostUrl()));
-        commentPane.add(commentContent, 2, 1);
+        Hyperlink commentTitle = new Hyperlink(commentPreview.getTitle());
+        commentTitle.setMinWidth(MIN_TITLE_WIDTH/2);
+        commentTitle.setFont(Font.font(FONT_TYPE_CONTENT, FontWeight.BOLD, POST_TITLE_SIZE));
+        commentTitle.setTextFill(POST_COLOR);
+        commentTitle.setOnAction(evt -> RedditController.requestPostPage(commentPreview.getOriginalPostUrl()));
+        commentPane.add(commentTitle, 2, 1);
+
+        Text commentContent = new Text(commentPreview.getComment());
+        commentContent.setWrappingWidth(SCENE_WIDTH/1.5);
+        commentPane.add(commentContent, 2, 2);
+
 
         return commentPane;
     }
