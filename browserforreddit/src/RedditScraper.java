@@ -9,14 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RedditScraper {
-
-    public static void main(String[]args){
-        RedditScraper user = new RedditScraper();
-        //user.subReddit("http://www.reddit.com/r/random");
-        //user.scrapePost("https://www.reddit.com/r/politics/comments/7cqez8/the_secret_correspondence_between_donald_trump_jr/");
-        User temp = RedditScraper.scrapeUser("http://www.reddit.com/user/libbyliblib");
-    }
-
+    
     /**
      *
      * @param url of the reddit page to scrape. Only gets called on comment threads, that have /comments/ in the url
