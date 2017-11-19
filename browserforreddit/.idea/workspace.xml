@@ -67,11 +67,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="RedditController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RedditController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/RedditController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="487">
-              <caret line="103" column="28" lean-forward="false" selection-start-line="103" selection-start-column="28" selection-end-line="103" selection-end-column="28" />
+            <state relative-caret-position="442">
+              <caret line="100" column="5" lean-forward="true" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -109,11 +109,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SceneRender.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SceneRender.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/SceneRender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+            <state relative-caret-position="270">
+              <caret line="77" column="53" lean-forward="false" selection-start-line="77" selection-start-column="53" selection-end-line="77" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -134,10 +134,11 @@
       <file leaf-file-name="RedditScraper.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/RedditScraper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2700">
-              <caret line="186" column="15" lean-forward="false" selection-start-line="186" selection-start-column="15" selection-end-line="186" selection-end-column="15" />
+            <state relative-caret-position="3690">
+              <caret line="248" column="0" lean-forward="true" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#13259#13267#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -239,8 +240,8 @@
         <option value="$PROJECT_DIR$/src/PostPreview.java" />
         <option value="$PROJECT_DIR$/src/CommentPreview.java" />
         <option value="$PROJECT_DIR$/src/UserGUI.java" />
-        <option value="$PROJECT_DIR$/src/SceneRender.java" />
         <option value="$PROJECT_DIR$/src/RedditController.java" />
+        <option value="$PROJECT_DIR$/src/SceneRender.java" />
       </list>
     </option>
   </component>
@@ -814,12 +815,12 @@
       <workItem from="1510353149746" duration="1605000" />
       <workItem from="1510770222348" duration="397000" />
       <workItem from="1510942367999" duration="4888000" />
-      <workItem from="1511125376790" duration="5314000" />
+      <workItem from="1511125376790" duration="5960000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20627000" />
+    <option name="totallyTimeSpent" value="21273000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1073,6 +1074,7 @@
           <caret line="13" column="5" lean-forward="true" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#13259#13267#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1145,16 +1147,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SceneRender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/SubredditGUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -1165,10 +1157,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/RedditScraper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2700">
-          <caret line="186" column="15" lean-forward="false" selection-start-line="186" selection-start-column="15" selection-end-line="186" selection-end-column="15" />
+        <state relative-caret-position="3690">
+          <caret line="248" column="0" lean-forward="true" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#13259#13267#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1195,9 +1188,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/RedditController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="103" column="28" lean-forward="false" selection-start-line="103" selection-start-column="28" selection-end-line="103" selection-end-column="28" />
+        <state relative-caret-position="442">
+          <caret line="100" column="5" lean-forward="true" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SceneRender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="77" column="53" lean-forward="false" selection-start-line="77" selection-start-column="53" selection-end-line="77" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
