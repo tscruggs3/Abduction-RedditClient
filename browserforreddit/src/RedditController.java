@@ -20,7 +20,7 @@ public class RedditController extends Application {
     public void start(Stage primaryStage) throws Exception{
         mainStage = primaryStage;
         pages = new ArrayDeque<Scene>();
-        requestSubredditPage("http://www.reddit.com/r/whowouldwin"); // Initial Page
+        requestSubredditPage("http://www.reddit.com/r/ProgrammerHumor"); // Initial Page
         primaryStage.show();
     }
 

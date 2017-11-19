@@ -34,7 +34,6 @@ public class UserGUI implements SceneRender {
             centerPane = addComments(user.getComments());
         } else {
             centerPane = addPosts(user.getPosts());
-            System.out.println("User Posts: " + user.getPosts().size());
         }
 
         ScrollPane postScroller = new ScrollPane(centerPane);
@@ -121,7 +120,6 @@ public class UserGUI implements SceneRender {
         for (int i = 0; i < postList.size(); i ++){
             Node post = SceneRender.buildPostPreview(postList.get(i));
             postsVBox.getChildren().add(post);
-            System.out.println(postList.get(i).getTitle());
         }
         return postsVBox;
     }
