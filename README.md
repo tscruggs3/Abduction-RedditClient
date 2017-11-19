@@ -26,9 +26,9 @@ We use the Observer and MVC design patterns in the code structure for the client
 
 Further, the bulk of our class design falls under the MVC pattern.  Our RedditScraper class is our model, containing the methods necessary to gather and process the data shown by the client.  The RedditController class is our Controller, taking input from the user interface and calling the proper methods in the RedditScraper.  Finally, the SceneRender interface and its implementing classes PostGUI, ContentGUI, SubredditGUI, and UserGUI represent the View, sending user input to the Controller and encompassing the user interface.
 
-### Why separate the View into several classses and an interface?
+### Why separate the View into several classes and an interface?
 
-Each class contains the methods for a specific type of page to maximize cohesion in reading the code.  We felt that placing all the individual render methods in one class would result in sprawling, unreadable code, and wanted to ensure that our final project was cohesive and readable.
+Each class contains the methods for a specific type of page to maximize cohesion in reading the code.  We felt that placing all the individual render methods in one class would result in sprawling, unreadable code, and wanted to ensure that our final project was cohesive and readable.  Further, we use an interface to contain static methods used by multiple View-related subclasses and to establish critical variable values such as window sizing and font attributes without redundantly placing each value in each subclass.
 
 ## Executing Abduction
 
