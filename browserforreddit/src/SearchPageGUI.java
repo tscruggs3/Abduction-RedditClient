@@ -52,7 +52,7 @@ public class SearchPageGUI implements SceneRender {
         HBox searchTitle = SceneRender.addTitle("Find a Subreddit");
 
         //Sets the spacing between the back button and the title
-        pane.setSpacing(230);
+        pane.setSpacing(255);
         pane.getChildren().addAll(back, searchTitle);
 
         return pane;
@@ -64,7 +64,7 @@ public class SearchPageGUI implements SceneRender {
         VBox suggestedLinks = createSuggestedLinks();
 
         //Sets the spacing between the Search Bar and the Suggested links column
-        searchContent.setSpacing(250);
+        searchContent.setSpacing(255);
 
         searchContent.getChildren().addAll(searchBox, suggestedLinks);
 

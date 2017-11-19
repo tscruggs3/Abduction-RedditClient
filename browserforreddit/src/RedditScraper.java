@@ -3,20 +3,11 @@
  */
 
 import com.jaunt.*;
-import sun.font.TrueTypeFont;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class RedditScraper {
-
-    public static void main(String[]args){
-        RedditScraper user = new RedditScraper();
-        //user.subReddit("http://www.reddit.com/r/random");
-        //user.scrapePost("https://www.reddit.com/r/politics/comments/7cqez8/the_secret_correspondence_between_donald_trump_jr/");
-        User temp = RedditScraper.scrapeUser("http://www.reddit.com/user/libbyliblib");
-    }
-
+    
     /**
      *
      * @param url of the reddit page to scrape. Only gets called on comment threads, that have /comments/ in the url
@@ -38,7 +29,6 @@ public class RedditScraper {
             String content;
             try{
                 content = user.doc.findFirst("<div class='entry unvoted'>").findFirst("<div class='md'>").findFirst("<p>").getText();
-                System.out.println("Post content found: " + content);
             } catch(NotFound e){
                 content = "";
                 System.out.println("Post content not found: " + e);
@@ -81,20 +71,23 @@ public class RedditScraper {
             System.err.println(e);
             return null;
         }
-        String nextURL = getNextURL(user.doc, url);
-        List<String> titles = getPostTitles(user);
-        List<String> postLinks = getPostLinks(user);
-        List<String> usernames = getUsers(user);
-        List<String> numUpvotes = getNumUpvotes(user);
-        List<String> linksToComments = getLinksToComments(user);
-        List<String> numComments = getNumComments(user);
-        String title = linksToComments.get(0).split("/")[4];
-        Subreddit subreddit = new Subreddit(title, nextURL);
-        for(int i = 0; i < postLinks.size(); i++){
-            PostPreview post = new PostPreview(postLinks.get(i), linksToComments.get(i), usernames.get(i),
-                    titles.get(i), numUpvotes.get(i), numComments.get(i));
-            subreddit.addPostPreview(post);
-        }
+        Subreddit subreddit;
+        try {
+            String nextURL = getNextURL(user.doc, url);
+            List<String> titles = getPostTitles(user);
+            List<String> postLinks = getPostLinks(user);
+            List<String> usernames = getUsers(user);
+            List<String> numUpvotes = getNumUpvotes(user);
+            List<String> linksToComments = getLinksToComments(user);
+            List<String> numComments = getNumComments(user);
+            String title = linksToComments.get(0).split("/")[4];
+            subreddit = new Subreddit(title, nextURL);
+            for (int i = 0; i < postLinks.size(); i++) {
+                PostPreview post = new PostPreview(postLinks.get(i), linksToComments.get(i), usernames.get(i),
+                        titles.get(i), numUpvotes.get(i), numComments.get(i));
+                subreddit.addPostPreview(post);
+            }
+        } catch(Exception e){return null;}
         return subreddit;
     }
 
@@ -136,7 +129,6 @@ public class RedditScraper {
             return;
         }
         Elements history = document.findEach("<div data-author='" + user.getUsername() + "'>");
-        System.out.println(history);
         for (Element post: history) {
             String dataAttribute;
             try{
@@ -148,16 +140,11 @@ public class RedditScraper {
             }
 
             if(dataAttribute.equals( "link")){
-                System.out.println("scraping link");
                 user.addPost(scrapeUserPost(post));
-                System.out.println(post);
                 continue;
             }
             if(dataAttribute.equals("comment")){
-                System.out.println("scraping comment");
                 user.addComment(scrapeUserComment(post));
-                System.out.println(post);
-                continue;
             }
         }
     }
