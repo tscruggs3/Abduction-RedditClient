@@ -1,5 +1,4 @@
 # Abduction for Reddit
-### Final Project (Team H)
 ### Nathan Mannes, Vermillion Villareal, Thomas Scruggs, Jordan Sybesma
 
 ## What Abduction Does:
